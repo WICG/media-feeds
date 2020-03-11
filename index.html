@@ -1,0 +1,1012 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Media Feeds API</title>
+  <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+  <script class='remove'>
+  "use strict";
+  // See https://github.com/w3c/respec/wiki/ for how to configure ReSpec
+  var respecConfig = {
+    "githubAPI": "WICG/media-feeds",
+    "editors": [{
+        name: "Becca Hughes",
+        email: "beccahughes@chromium.org",
+        company: "Google LLC"
+      },
+      // Add additional editors here. https://github.com/w3c/respec/wiki/editors
+    ],
+    "shortName": "media-feeds",
+    "specStatus": "CG-DRAFT",
+    "wg": "WICG",
+  };
+  </script>
+</head>
+
+<body>
+  <section id="abstract">
+    <p>
+      This specification enables web developers to show personalized media
+      recommendations on the browser UI.
+    </p>
+  </section>
+  <section id="sotd">
+    <p>
+      This is an unofficial proposal.
+    </p>
+  </section>
+  <section id="introduction">
+    <h2>Introduction</h2>
+    <p>
+      <em>This section is non-normative.</em>
+    </p>
+
+    <p>
+      Media is used extensively today, and the Web is one of the primary means
+      of consuming media content. Many browsers show content recommendations in
+      their UI. This specification aims to enable web sites to specify a feed of
+      personalized media recommendations that can be fetched by the browser and
+      displayed in the browser UI. By improving media discovery this would
+      improve the user experience as well as providing web sites with a new way
+      of reaching users.
+    </p>
+  </section>
+
+  <section id="conformance">
+    <p>
+      Unless otherwise stated, string comparisons are done in a
+      <a data-cite="HTML#case-sensitive">case-sensitive</a> manner.
+    </p>
+
+    <p>
+      In this document when we compare a string that starts with or equals
+      <code>https://schema.org</code> then <code>http://schema.org</code> is
+      valid too.
+    </p>
+  </section>
+
+  <section id="security-privacy-considerations">
+    <h2>Security and Privacy Considerations</h2>
+    <p>
+      <em>This section is non-normative.</em>
+    </p>
+
+    <p>
+      The API introduced in this specification has very low impact with regards
+      to security and privacy. The user agent should take care if fetching feeds
+      based on heuristics. The site may also be able to see when their feed
+      content is clicked by adding tracking to the <a>media feed item url</a> or
+      to the <a>media image</a> url.
+    </p>
+
+    <p>
+      For privacy purposes, the user agent should disable the feature in incognito
+      mode. This is because the lifetime of the incognito mode session is not long
+      enough for this feature to be useful.
+    </p>
+  </section>
+
+  <section id="model">
+    <h2>Model</h2>
+
+    <p>
+      The <dfn>media feed store</dfn> stores media feeds that have been
+      discovered. There can only be one <a>media feed URL</a>
+      <a data-cite="HTML#concept-origin">per-origin</a>. If a user agent
+      discovers a new <a>media feed URL</a> for an
+      <a data-cite="HTML#concept-origin">origin</a> that already has a <a>media
+      feed URL</a> then we will replace the existing one.
+    </p>
+  </section>
+
+  <section id="discovery-of-media-feeds">
+    <h2>Discovery of Media Feeds</h2>
+
+    <p>
+      The site should advertise the Media Feed to the user agent by adding a
+      <a data-cite="HTML#link">link element</a> to the
+      <a data-cite="HTML#the-head-element">head element</a>, these are known as
+      the <dfn>eligible feed links</dfn>. The
+      <a data-cite="HTML#attr-hyperlink-href">href attribute</a> contains the
+      <dfn>media feed URL</dfn>.
+
+      The user agent MUST run the following steps for each <a>eligible feed link
+      </a> when the top level <a data-cite="HTML#document">Document</a> is
+      <a data-cite="HTML#ready-for-post-load-tasks">ready for post-load tasks</a>:
+
+      <ul>
+        <li>
+          If the <a data-cite="HTML#attr-hyperlink-type">type attribute</a> is
+          not set to
+          <a data-cite="json-ld11#iana-considerations">application/ld+json</a>
+          then return null
+        </li>
+        <li>
+          If the <a data-cite="HTML#linkTypes">link type</a> is not set to
+          <code>feed</code> then return null
+        </li>
+        <li>
+          If the <a>media feed URL</a> is not a valid
+          <a data-cite="url#urls">URL</a> then return an error
+        </li>
+        <li>
+          If the <a>media feed URL</a> is not the
+          <a data-cite="HTML#concept-origin">same origin</a> as the current
+          document then return an error
+        </li>
+        <li>
+          Store the <a>media feed URL</a> and
+          <a data-cite="HTML#concept-origin">origin</a> in the
+          <a>media feed store</a>
+        </li>
+      </ul>
+    </p>
+  </section>
+
+  <section id="retrieval-of-media-feeds">
+    <h2>Retrieval of Media Feeds</h2>
+
+    <p>
+      The user agent MUST initiate a <a data-cite="FETCH#fetching">fetch</a>
+      with the following <a data-cite="FETCH#concept-request">request</a>
+      parameters:
+
+      <ul>
+        <li>
+          <a data-cite="FETCH#concept-header-list">header list</a>
+          containing the <a data-cite="rfc7231#header.accept">accept header</a> set
+          to <a data-cite="json-ld11#iana-considerations">application/ld+json</a>
+        </li>
+        <li>
+          <a data-cite="FETCH#concept-request-redirect-mode">request mode</a> set to
+          <code>error</code>
+        </li>
+      </ul>
+    </p>
+
+    <p>
+      The site will return the <dfn>media feed document</dfn> which MUST be a
+      <a data-cite="json-ld11#dfn-json-ld-document">valid JSON+LD</a>
+      document</a>.
+    </p>
+
+    <p>
+      If the user agent recieves a
+      <a data-cite="rfc7231#section-6.5.9">410 Gone</a> status code from the
+      site then it should remove the feed from the <a>media feed store</a>.
+    </p>
+
+    <section id="media-feed-document">
+      <h3>Media Feed Document</h2>
+
+      <p>
+        The <a>media feed document</a> should be a
+        <a data-cite="schema-org/CompleteDataFeed#">CompleteDataFeed</a>. This
+        has a <a data-cite="schema-org/provider#">provider</a> property that
+        contains an <a data-cite="schema-org/Organization#">Organization</a> to
+        describe the <dfn>publishing web site</dfn>. The
+        <a data-cite="schema-org/member#">member</a> field on
+        <a data-cite="schema-org/Organization#">Organization</a> should
+        contain a <a data-cite="schema-org/Person#">Person</a> that contains the
+        details about the <dfn>currently logged in user</dfn>. The user agent can
+        show this to the user to identifier which account the recommendations are
+        coming from. This is especially important if the media site supports
+        multiple profiles.
+      </p>
+
+      <p>
+        The user agent MUST validate the <a>media feed document</a> using the
+        following steps:
+
+        <ul>
+          <li>
+            The <a data-cite="json-ld11#the-context">context</a> MUST be set to
+            <code>https://schema.org</code>.
+          </li>
+          <li>
+            The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+            set to
+            <a data-cite="schema-org/CompleteDataFeed#">CompleteDataFeed</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/member#">provider</a> property MUST
+            contain a <a data-cite="schema-org/Organization#">Organization</a>
+            that is a valid <a>publishing web site</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/dataFeedElement#">dataFeedElement</a>
+            property supports <a>multiple values</a> and if present it MUST
+            contain valid <a>media feed items</a>.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        The user agent MUST validate the <a>publishing web site</a> using the
+        following steps:
+
+        <ul>
+          <li>
+            The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+            set to <a data-cite="schema-org/Organization#">Organization</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/name#">name</a> property MUST contain a
+            valid non-empty string.
+          </li>
+          <li>
+            The <a data-cite="schema-org/logo#">logo</a> property MUST contain a
+            valid <a>media image</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/member#">member</a> property MUST
+            contain a <a data-cite="schema-org/Person#">Person</a> that is a
+            valid <a>currently logged in user</a>.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        The user agent MUST validate the <a>currently logged in user</a> using
+        the following steps:
+
+        <ul>
+          <li>
+            The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+            set to <a data-cite="schema-org/Person#">Person</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/name#">name</a> property MUST contain a
+            valid non-empty string.
+          </li>
+          <li>
+            The <a data-cite="schema-org/image#">image</a> property MUST contain
+            a valid <a>media image</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/email#">email</a> property SHOULD be
+            present. If present, it MUST contain a valid
+            <a data-cite="EMAIL#section-3.4">email address</a>.
+          </li>
+        </ul>
+      </p>
+
+      <div class="example" id="example-1-sample-feed">
+        <div class="marker">
+            <a class="self-link" href="#example-1-sample-feed">
+              Example<bdi> 1</bdi>
+            </a>
+            <span class="example-title">: Sample Media Feed</span>
+        </div>
+        <pre>
+          <code class="json">
+            {
+              "@context": "http://schema.org",
+              "@type": "CompleteDataFeed",
+              "dataFeedElement": [
+                ...
+              ]
+              "provider": {
+                "@type": "Organization",
+                "member": {
+                  "@type": "Person",
+                  "email": "beccahughes@chromium.org",
+                  "name": "Becca Hughes",
+                  "image": "https://www.example.org/profile_pic.jpg"
+                },
+                "name": "Media Site",
+                "logo": "https://www.example.org/logo.jpg"
+              }
+            }
+          </code>
+        </pre>
+      </div>
+    </section>
+
+    <section id="media-feed-item">
+      <h3>Media Feed Item</h2>
+
+      <p>
+        A <a>media feed document</a> may contain multiple
+        <dfn>media feed items</dfn>. Each item represents a single item of media
+        to be recommended to the user. Each <a>media feed item</a> must be one
+        of the following <dfn>media item types</dfn>:
+
+        <ul>
+          <li>
+            <a data-cite="schema-org/VideoObject#">
+              Thing > CreativeWork > MediaObject > VideoObject
+            </a>
+          </li>
+          <li>
+            <a data-cite="schema-org/Movie#">
+              Thing > CreativeWork > Movie
+            </a>
+          </li>
+          <li>
+            <a data-cite="schema-org/TVSeries#">
+              Thing > CreativeWork > CreativeWorkSeries > TVSeries
+            </a>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Every <a>media feed item</a> MUST have a <dfn>media item ID</dfn>
+        that is unique within the <a>media feed document</a> and is a valid
+        <a data-cite="url#urls">URL</a>.
+      </p>
+
+      <p>
+        The user agent MUST validate every <a>media feed item</a> using the
+        following steps:
+
+        <ul>
+          <li>
+            The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+            set to a valid <a>media item type</a>.
+          </li>
+          <li>
+            The <a data-cite="json-ld11#node-identifiers">@id</a> property MUST
+            be set and contain a valid <a>media item ID</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/name#">name</a> property MUST contain
+            a valid non-empty string.
+          </li>
+          <li>
+            The <a data-cite="schema-org/author#">author</a> property or
+            <a data-cite="schema-org/creator#">creator</a> property MUST
+            contain a valid <a>media item author</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/datePublished#">datePublished</a>
+            property MUST contain a string that is valid date or date time in
+            <a data-cite="ISO8601#">ISO8601 format</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/isFamilyFriendly#">isFamilyFriendly</a>
+            property MUST contain a <a>schema.org boolean property</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/thumbnail#">thumbnail</a> property or
+            <a data-cite="schema-org/image#">image</a> property supports
+            <a>multiple values</a> and MUST contain a maximum of 5 different
+            <a>media images</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/potentialAction#">
+            potentialAction</a> property MUST be a valid <a>media item
+            action</a> unless the object has an <a>embedded watch action</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/interactionStatistic#">
+            interactionStatistic</a> property supports <a>multiple values</a>
+            and if present it MUST contain a maximum of 3
+            <a>media item interaction statistics</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/contentRating#">
+              contentRating</a> property MAY be present. It it is present,
+            it MUST be a valid <a>media item content rating</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/genre#">genre</a> property supports
+            <a>multiple values</a> and if present it MUST contain a maximum
+            of 5 non-empty strings.
+          </li>
+          <li>
+            The <a data-cite="schema-org/publication#">publication</a> property
+            MAY be present. If it is present, it MUST contain a valid
+            <a>media item live metadata</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/identifier#">identifier</a> property
+            supports <a>multiple values</a> and if present it MUST contain
+            a valid <a>media item third party identifier set</a>.
+          </li>
+          <li>
+            If the <a>media item type</a> is a
+            <a data-cite="schema-org/Movie#">Movie</a> or a
+            <a data-cite="schema-org/VideoObject#">VideoObject</a> then the
+            user agent MUST also do the following:
+
+            <ul>
+              <li>
+                The <a data-cite="schema-org/duration#">duration</a> property MUST
+                contain a string that is valid duration in
+                <a data-cite="ISO8601#">ISO8601 format</a>.
+              </li>
+            </ul>
+          </li>
+          <li>
+            If the <a>media item type</a> is a
+            <a data-cite="schema-org/TVSeries#">TVSeries</a> then the user agent
+            MUST also do the following:
+
+            <ul>
+              <li>
+                The <a data-cite="schema-org/numberOfEpisodes#">
+                numberOfEpisodes</a> property MUST be a positive integer.
+              </li>
+              <li>
+                The <a data-cite="schema-org/numberOfSeasons#">
+                numberOfSeasons</a> property MUST be a positive integer.
+              </li>
+              <li>
+                The <a data-cite="schema-org/episode#">episode</a> property MAY
+                be present. If it is, it should contain a valid <a>media item
+                episode</a>.
+              </li>
+              <li>
+                The <a data-cite="schema-org/containsSeason#">containsSeason</a>
+                property MAY be present. If it is, it should contain a valid
+                <a>media item season</a>.
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </p>
+    </section>
+
+    <section id="media-item-action">
+      <h3>Media Item Action</h2>
+
+        <p>
+          The user agent MUST use the following steps to validate a <dfn>media
+          item action</dfn>. The action contains the
+          <dfn>media feed item url</dfn> which is used by the user agent to
+          launch the media item.
+
+          <ul>
+            <li>
+              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+              set to <a data-cite="schema-org/WatchAction#">WatchAction</a>.
+            </li>
+            <li>
+              The <a data-cite="schema-org/actionStatus#">actionStatus</a>
+              property MAY be present. If present it MUST be one of the
+              following:
+
+              <ul>
+                <li>
+                  <a data-cite="schema-org/ActiveActionStatus#">
+                    https://schema.org/ActiveActionStatus
+                  </a> for when the action is in progress.
+                </li>
+                <li>
+                  <a data-cite="schema-org/PotentialActionStatus#">
+                    https://schema.org/PotentialActionStatus
+                  </a> for when the action has not been started.
+                </li>
+                <li>
+                  <a data-cite="schema-org/CompletedActionStatus#">
+                    https://schema.org/CompletedActionStatus
+                  </a> for when the action is finished.
+                </li>
+              </ul>
+            </li>
+            <li>
+              If the <a data-cite="schema-org/actionStatus#">actionStatus</a>
+              property is set to <a data-cite="schema-org/ActiveActionStatus#">
+              https://schema.org/ActiveActionStatus</a>, then the
+              <a data-cite="schema-org/startTime#">startTime</a> property MUST
+              contain a valid <a data-cite="xmlschema-2#time">time</a>.
+            </li>
+            <li>
+              The <a data-cite="schema-org/target#">target</a> property MUST
+              contain a valid <a data-cite="url#urls">URL</a>.
+            </li>
+          </ul>
+        </p>
+    </section>
+
+    <section id="media-item-content-rating">
+      <h3>Media Item Content Rating</h2>
+
+        <p>
+          The <dfn>content rating</dfn> rates the suitability of the <a>media
+          feed item</a> to its audience. It is usually a category that tells
+          which age group is suitable to view the media.
+        </p>
+
+        <p>
+          The <dfn>media item content rating</dfn> can be a non-empty string
+          containing the <a>content rating</a> of the media item. It can also
+          be a <a data-cite="schema-org/Rating#">Rating</a>. If it is a
+          <a data-cite="schema-org/Rating#">Rating</a> then the user
+          agent MUST use the following steps to validate it:
+
+          <ul>
+            <li>
+              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+              set to <a data-cite="schema-org/Rating#">Rating</a>.
+            </li>
+            <li>
+              The <a data-cite="schema-org/author#">author</a> property MUST
+              contain a valid non-empty string. This is the agency that issued
+              the rating (e.g. MPAA). A list of known content rating agencies
+              is <a href="content-rating-agencies.md">available here</a>.
+            </li>
+            <li>
+              The <a data-cite="schema-org/ratingValue#">ratingValue</a>
+              property MUST contain a valid non-empty string. This is the
+              <a>content rating</a> that was issued.
+            </li>
+          </ul>
+        </p>
+    </section>
+
+    <section id="media-item-live-metadata">
+      <h3>Media Item Live Metadata</h2>
+
+        <p>
+          The <dfn>media item live metadata</dfn> should be a
+          be a <a data-cite="schema-org/BroadcastEvent#">BroadcastEvent</a>.
+          The user agent MUST use the following steps to validate it:
+
+          <ul>
+            <li>
+              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+              set to <a data-cite="schema-org/BroadcastEvent#">BroadcastEvent</a>.
+            </li>
+            <li>
+              The <a data-cite="schema-org/isLiveBroadcast#">isLiveBroadcast</a>
+              property MUST be set to <code>true</code>.
+            </li>
+            <li>
+              The <a data-cite="schema-org/startDate#">startDate</a> property MUST
+              contain a string that is valid date or date time in
+              <a data-cite="ISO8601#">ISO8601 format</a>.
+            </li>
+            <li>
+              The <a data-cite="schema-org/endDate#">endDate</a> property MAY
+              be present. It it is, it MUST contain a string that is valid
+              date or date time in <a data-cite="ISO8601#">ISO8601 format</a>.
+            </li>
+          </ul>
+        </p>
+    </section>
+
+
+    <section id="media-item-interaction-statistic">
+      <h3>Media Item Interaction Statistic</h2>
+
+        <p>
+          The <dfn>media item interaction statistic</dfn> is a counter that
+          counts how many interactions of a certain type (e.g. likes, views)
+          that a <a>media feed item</a> has. There can be at most one
+          <a>media item interaction statistic</a> for a certain type for a
+          single <a>media feed item</a>.
+        </p>
+
+        <p>
+          The user agent MUST use the following steps to validate it:
+
+          <ul>
+            <li>
+              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+              set to <a data-cite="schema-org/InteractionCounter#">
+              InteractionCounter</a>.
+            </li>
+            <li>
+              The <a data-cite="schema-org/interactionType#">interactionType</a>
+              property MUST be unique within a <a>media feed item</a> and be
+              one of the following:
+
+              <ul>
+                <li>
+                  <a data-cite="schema-org/WatchAction#">
+                    https://schema.org/WatchAction
+                  </a> for how many views this <a>media feed item</a> has.
+                </li>
+                <li>
+                  <a data-cite="schema-org/LikeAction#">
+                    https://schema.org/LikeAction
+                  </a> for how many likes this <a>media feed item</a> has.
+                </li>
+                <li>
+                  <a data-cite="schema-org/DislikeAction#">
+                    https://schema.org/DislikeAction
+                  </a> for how many dislikes this <a>media feed item</a> has.
+                </li>
+              </ul>
+            </li>
+            <li>
+              The <a data-cite="schema-org/userInteractionCount#">
+              userInteractionCount</a> property MUST contain a number. This can
+              be either a JSON number or a string. This is the count of the
+              interactions that happened.
+            </li>
+          </ul>
+        </p>
+    </section>
+
+    <section id="media-item-author">
+      <h3>Media Item Author</h2>
+
+        <p>
+          The <dfn>media item author</dfn> can be a non-empty string containing
+          the name of the author. It can also be a
+          <a data-cite="schema-org/Person#">Person</a>. If it is a
+          <a data-cite="schema-org/Person#">Person</a> then the user
+          agent MUST use the following steps to validate it:
+  
+          <ul>
+            <li>
+              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+              set to <a data-cite="schema-org/Person#">Person</a>.
+            </li>
+            <li>
+              The <a data-cite="schema-org/name#">name</a> property MUST contain a
+              valid non-empty string.
+            </li>
+            <li>
+              The <a data-cite="schema-org/url#">url</a> property MAY be present
+              If present, it MUST contain a valid
+              <a data-cite="url#urls">URL</a>.
+            </li>
+          </ul>
+        </p>
+    </section>
+
+    <section id="media-item-season">
+      <h3>Media Item Season</h2>
+
+        <p>
+          The <dfn>media item season</dfn> represents a season of TV episodes.
+        </p>
+
+        <p>
+          The user agent MUST use the following steps to validate it:
+
+          <ul>
+            <li>
+              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+              set to <a data-cite="schema-org/TVSeason#">TVSeason</a>.
+            </li>
+            <li>
+              The <a data-cite="schema-org/seasonNumber#">
+              seasonNumber</a> property MUST be a positive integer.
+            </li>
+            <li>
+              The <a data-cite="schema-org/numberOfEpisodes#">
+              numberOfEpisodes</a> property MUST be a positive integer.
+            </li>
+            <li>
+              The <a data-cite="schema-org/episode#">episode</a> property MAY
+              be present. If it is, it should contain a valid <a>media item
+              episode</a>.
+            </li>
+          </ul>
+        </p>
+    </section>
+
+    <section id="media-item-episode">
+      <h3>Media Item Episode</h2>
+
+        <p>
+          The <dfn>media item episode</dfn> represents a single TV episode. It
+          contains an <dfn>embedded watch action</dfn> stored in the
+          <a data-cite="schema-org/potentialAction#">potentialAction</a>
+          property.
+        </p>
+
+        <p>
+          The user agent MUST use the following steps to validate it:
+
+          <ul>
+            <li>
+              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+              set to <a data-cite="schema-org/TVEpisode#">TVEpisode</a>.
+            </li>
+            <li>
+              The <a data-cite="schema-org/episodeNumber#">
+              episodeNumber</a> property MUST be a positive integer.
+            </li>
+            <li>
+              The <a data-cite="schema-org/name#">name</a> property MAY be
+              present. If present, it MUST contain a valid non-empty string.
+            </li>
+            <li>
+              The <a data-cite="schema-org/identifier#">identifier</a> property
+              supports <a>multiple values</a> and if present it MUST contain
+              a valid <a>media item third party identifier set</a>.
+            </li>
+            <li>
+              The <a data-cite="schema-org/thumbnail#">thumbnail</a> property or
+              <a data-cite="schema-org/image#">image</a> property supports
+              <a>multiple values</a> and if present it MUST contain a maximum
+              of 5 valid <a>media images</a>.
+            </li>
+            <li>
+              The <a data-cite="schema-org/potentialAction#">
+              potentialAction</a> property MUST contain a valid
+              <a>media item action</a>.
+            </li>
+          </ul>
+        </p>
+    </section>
+
+    <section id="media-image">
+      <h3>Media Image</h2>
+
+        <p>
+          The <dfn>media image</dfn> can be a string containg a valid
+          <a data-cite="url#urls">URL</a> to an image. It can also be an
+          <a data-cite="schema-org/ImageObject#">ImageObject</a>. If it is an
+          <a data-cite="schema-org/ImageObject#">ImageObject</a> then the user
+          agent MUST use the following steps to validate it:
+
+          <ul>
+            <li>
+              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+              set to <a data-cite="schema-org/ImageObject#">ImageObject</a>.
+            </li>
+            <li>
+              The <a data-cite="schema-org/width#">width</a> property MUST
+              contain a positive integer that is the width of the image in
+              pixels.
+            </li>
+            <li>
+              The <a data-cite="schema-org/height#">height</a> property MUST
+              contain a positive integer that is the height of the image in
+              pixels.
+            </li>
+            <li>
+              The <a data-cite="schema-org/embedUrl#">embedUrl</a> property or
+              <a data-cite="schema-org/url#">url</a> property MUST contain
+              a valid <a data-cite="url#urls">URL</a>.
+            </li>
+          </ul>
+        </p>
+    </section>
+
+    <section id="media-item-identifier">
+      <h3>Media Item Identifier</h2>
+
+        <p>
+          A <dfn>media item third party identifier</dfn> is an identifier for the
+          <a>media feed item</a> in a third-party system. The user agent can use
+          it to cross reference the  <a>media feed item</a> with media data stored
+          in other systems.
+        </p>
+
+        <p>
+          The <dfn>third party identifier name</dfn> identifies the type of the
+          third-party identifier and these are left up to the implementation. A 
+          list of known identifiers is <a href="third-party-identifiers.md">
+          available here</a>.
+        </p>
+        
+        <p>
+          The <dfn>media item third party identifier set</dfn> is a set of
+          <a>media item third party identifiers</a> that contain at most one 
+          identifier per <a>third party identifier name</a> for a single
+          <a>media feed item</a>. Any duplicates MAY be ignored by the user
+          agent.
+        </p>
+
+        <p>
+          The user agent MUST use the following steps to validate the
+          <a>media item third party identifier</a>:
+
+          <ul>
+            <li>
+              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+              set to <a data-cite="schema-org/Identifier#">Identifier</a>.
+            </li>
+            <li>
+              The <a data-cite="schema-org/propertyID#">propertyID</a> property
+              contains the <a>third party identifier name</a> which MUST be a
+              non-empty string.
+            </li>
+            <li>
+              The <a data-cite="schema-org/value#">value</a> property MUST
+              contain a non-empty string.
+            </li>
+          </ul>
+        </p>
+    </section>
+  </section>
+
+  <section id="retrieval-of-common-properties">
+    <h2>Retrieval of Common Properties</h2>
+
+    <p>
+      This section describes how a user agent MUST validate different schema.org
+      property types.
+    </p>
+
+    <section id="boolean-retrieval">
+      <h3>Boolean</h3>
+
+      <p>
+        The user agent MUST use the following steps to convert a <dfn>schema.org
+        boolean property</dfn> into a normal boolean:
+
+        <ul>
+          <li>
+            If the property is a <a data-cite="JSON#">JSON boolean</a> type,
+            then return the value
+          </li>
+          <li>
+            If the property is a <a data-cite="JSON#">JSON string</a> type then:
+
+            <ul>
+              <li>
+                If the string value equals <code>https://schema.org/True</code>,
+                then return true
+              </li>
+              <li>
+                If the string value equals <code>https://schema.org/False</code>,
+                then return false
+              </li>
+            </ul>
+          </li>
+          <li>
+            Otherwise, return an error
+          </li>
+        </ul>
+      </p>
+    </section>
+
+    <section id="multiple-values">
+      <h3>Multiple Values</h3>
+
+      <p>
+        If the property supports <dfn>multiple values</dfn> then the values
+        for the property MUST be wrapped in an array. If there is only one
+        value then it MAY be embedded directly. If there is a maximum
+        number of values supported by a <a>multiple value</a> property then
+        these MAY be ignored by the user agent.
+      </p>
+
+      <div class="example" id="example-2-multiple-values">
+        <div class="marker">
+            <a class="self-link" href="#example-2-multiple-values">
+              Example<bdi> 2</bdi>
+            </a>
+            <span class="example-title">: Multiple Values</span>
+        </div>
+
+        <p>
+          If there are multiple values for a property then a JSON array
+          can be used. For example with the <code>genre</code>
+          property example below their are two genres specified:
+        </p>
+
+        <pre>
+          <code class="json">
+            {
+              "@context": "https://schema.org/",
+              "@type": "VideoObject",
+              ...
+
+              "genre": {
+                "Action",
+                "Comedy"
+              },
+
+              ...
+            }
+          </code>
+        </pre>
+
+        <p>
+          If there is only one value it can be embedded directly in the
+          property without needing an array.
+        </p>
+
+        <pre>
+          <code class="json">
+            {
+              "@context": "https://schema.org/",
+              "@type": "VideoObject",
+              ...
+
+              "genre": "Action",
+
+              ...
+            }
+          </code>
+        </pre>
+      </div>
+    </section>
+  </section>
+
+  <section id="continue-watching-play-next">
+    <h2>Continue Watching & Play Next</h2>
+
+    <p>
+      A user agent might want to display content for the user to continue
+      watching. In this case the <a>media item action</a> can have the
+      <a data-cite="schema-org/ActiveActionStatus#">
+      https://schema.org/ActiveActionStatus</a> to indicate this.
+    </p>
+
+    <div class="example" id="example-3-continue-watching">
+      <div class="marker">
+          <a class="self-link" href="#example-3-continue-watching">
+            Example<bdi> 3</bdi>
+          </a>
+          <span class="example-title">: Continue Watching</span>
+      </div>
+      <pre>
+        <code class="json">
+          {
+            "@context": "https://schema.org/",
+            "@type": "VideoObject",
+            ...
+
+            "potentialAction": {
+              "@type": "WatchAction",
+              "actionStatus": "http://schema.org/ActiveActionStatus",
+              "startTime": "00:00:10",
+              "target": "https://example.org/video?time=10s"
+            },
+
+            ...
+          }
+        </code>
+      </pre>
+    </div>
+
+    <p>
+      A user agent might want to display the next episode in a TV series to play
+      next. In this case, the user agent should calculate the
+      <dfn>play next episode</dfn> using the following algorithm:
+    </p>
+
+    <p>
+      <ul>
+        <li>
+          If the <a>media item type</a> is NOT
+          <a data-cite="schema-org/TVSeries#">TVSeries</a> then return null
+        </li>
+
+        <li>
+          Let <var>current episode</var> be the
+          <a data-cite="schema-org/TVEpsiode#">TVEpisode</a> which has
+          a <a>media item action</a> with either a
+          <a data-cite="schema-org/CompletedActionStatus#">
+          https://schema.org/CompletedActionStatus</a> or
+          <a data-cite="schema-org/ActiveActionStatus#">
+          https://schema.org/ActiveActionStatus</a>. If there is more than one
+          then we should use the <a data-cite="schema-org/episodeNumber#">
+          episodeNumber</a> and <a data-cite="schema-org/seasonNumber#">
+          seasonNumber</a> to find the latest one. If we cannot find a
+          <var>current episode</var> then return null
+        </li>
+
+        <li>
+          Let <var>next episode number</var> be the <var>current episode</var>
+          number plus 1
+        </li>
+
+        <li>
+          Let <var>next season number</var> be the <var>current episode</var>
+          season number
+        </li>
+
+        <li>
+          If the <var>next episode number</var> is greater than the
+          <a data-cite="schema-org/numberOfEpisodes#">numberOfEpisodes</a>
+          in the season; then set <var>next episode number</var> to 1 and
+          increment the <var>next season number</var> by 1
+        </li>
+
+        <li>
+          Return the <a data-cite="schema-org/TVEpsiode#">TVEpisode</a>
+          which has the <a data-cite="schema-org/episodeNumber#">
+          episodeNumber</a> equal to <var>next epsiode number</var> and the
+          <a data-cite="schema-org/seasonNumber#">
+          seasonNumber</a> equal to <var>next season number</var>
+        </li>
+      </ul>
+    </p>
+  </section>
+</body>
+
+</html>
