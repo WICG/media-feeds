@@ -410,7 +410,7 @@ It is **required** that all media items should have the following properties:
     
 2. `name` - the name of the content
     
-3. `author` or creator - the author / creator of the content
+3. `author` - the author / creator of the content (only for VideoObject)
     
 4. `datePublished` - the timestamp the content was published
     
