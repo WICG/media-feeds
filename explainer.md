@@ -103,6 +103,12 @@ If a site wishes to recommend a generic video to a user they can use the [VideoO
   "description": "This is a video that is about a bunny."
   "duration": "PT5M49S",
   "genre": "Animated Shorts",
+  "image": {
+    "@type": "ImageObject",
+    "width": 360,
+    "height": 480,
+    "url": "https://example.org/video_thumbnail.png"
+  },
   "interactionStatistic": {
     "@type": "InteractionCounter",
     "interactionType": "http://schema.org/WatchAction",
@@ -113,13 +119,7 @@ If a site wishes to recommend a generic video to a user they can use the [VideoO
   "potentialAction": {
     "@type": "WatchAction",
     "target": "https://example.org/watch/video"
-  },
-  "thumbnail": {
-    "@type": "ImageObject",
-    "width": 360,
-    "height": 480,
-    "url": "https://example.org/video_thumbnail.png"
-  } 
+  }
 }
 ```
 
@@ -147,6 +147,12 @@ If the media item url will not resume playback at the correct time, then the `ta
   "description": "This is a video that is about a bunny."
   "duration": "PT5M49S",
   "genre": "Animated Shorts",
+  "image": {
+    "@type": "ImageObject",
+    "width": 360,
+    "height": 480,
+    "url": "https://example.org/video_thumbnail.png"
+  },
   "interactionStatistic": {
     "@type": "InteractionCounter",
     "interactionType": "http://schema.org/WatchAction",
@@ -159,13 +165,7 @@ If the media item url will not resume playback at the correct time, then the `ta
     "actionStatus": "http://schema.org/ActiveActionStatus",
     "startTime": "00:00:10",
     "target": "https://example.org/video?time=10s"
-  },
-  "thumbnail": {
-    "@type": "ImageObject",
-    "width": 360,
-    "height": 480,
-    "url": "https://example.org/video_thumbnail.png"
-  } 
+  }
 }
 ```
 
@@ -182,6 +182,12 @@ The user agent will then find the next episode in this series that should have a
   "@id": "https://example.org/example-tv-series",
   "description": "This is a docuseries about something cool."
   "genre": "Documentaries",
+  "image": {
+    "@type": "ImageObject",
+    "width": 360,
+    "height": 480,
+    "url": "https://example.org/video_thumbnail.png"
+  },
   "isFamilyFriendly": "http://schema.org/True",
   "name": "Cool TV Series",
   "containsSeason": {
@@ -224,13 +230,7 @@ The user agent will then find the next episode in this series that should have a
       },
     },
     "seasonNumber": 1
-  }],
-  "thumbnail": {
-    "@type": "ImageObject",
-    "width": 360,
-    "height": 480,
-    "url": "https://example.org/video_thumbnail.png"
-  }  
+  }] 
 }
 ```
 
@@ -243,6 +243,12 @@ Below is an example where a user has finished watching the first season and the 
   "@id": "https://example.org/example-tv-series",
   "description": "This is a docuseries about something cool."
   "genre": "Documentaries",
+  "image": {
+    "@type": "ImageObject",
+    "width": 360,
+    "height": 480,
+    "url": "https://example.org/video_thumbnail.png"
+  },
   "isFamilyFriendly": "http://schema.org/True",
   "name": "Cool TV Series",
   "containsSeason": [{
@@ -287,13 +293,7 @@ Below is an example where a user has finished watching the first season and the 
       },
     },
     "seasonNumber": 2
-  }],
-  "thumbnail": {
-    "@type": "ImageObject",
-    "width": 360,
-    "height": 480,
-    "url": "https://example.org/video_thumbnail.png"
-  }  
+  }] 
 }
 ```
 
@@ -308,18 +308,18 @@ If a site wishes to recommend a TV series to a user they can use the [TVSeries](
   "@id": "https://example.org/tv-series",
   "description": "This is a docuseries about something cool."
   "genre": "Documentaries",
+  "image": {
+    "@type": "ImageObject",
+    "width": 360,
+    "height": 480,
+    "url": "https://example.org/video_thumbnail.png"
+  },
   "isFamilyFriendly": "http://schema.org/True",
   "name": "Cool TV Series",
   "potentialAction": {
     "@type": "WatchAction",
     "target": "https://example.org/watch/tv-series"
-  },
-  "thumbnail": {
-    "@type": "ImageObject",
-    "width": 360,
-    "height": 480,
-    "url": "https://example.org/video_thumbnail.png"
-  } 
+  }
 }
 ```
 
@@ -341,6 +341,12 @@ If a site wishes to recommend some live video content to a user they can add a [
   "description": "This is a video that is about a bunny."
   "duration": "PT5M49S",
   "genre": "Animated Shorts",
+  "image": {
+    "@type": "ImageObject",
+    "width": 360,
+    "height": 480,
+    "url": "https://example.org/video_thumbnail.png"
+  },
   "interactionStatistic": {
     "@type": "InteractionCounter",
     "interactionType": "http://schema.org/WatchAction",
@@ -357,12 +363,6 @@ If a site wishes to recommend some live video content to a user they can add a [
     "isLiveBroadcast": "http://schema.org/True",
     "startDate": "2020-01-28T06:00:00+0000",
     "endDate": "2020-01-28T07:00:00+0000"
-  },
-  "thumbnail": {
-    "@type": "ImageObject",
-    "width": 360,
-    "height": 480,
-    "url": "https://example.org/video_thumbnail.png"
   } 
 }
 ```
@@ -387,17 +387,17 @@ If a site wishes to recommend a movie to a user they can use the [Movie](https:/
   "description": "This is a movie about a dream."
   "duration": "PT5M49S",
   "genre": "Animated",
+  "image": {
+    "@type": "ImageObject",
+    "width": 360,
+    "height": 480,
+    "url": "https://example.org/movie_thumbnail.png",
+  },
   "isFamilyFriendly": "http://schema.org/True",
   "name": "Dream",
   "potentialAction": {
     "@type": "WatchAction",
     "target": "https://example.org/watch/movie"
-  },
-  "thumbnail": {
-    "@type": "ImageObject",
-    "width": 360,
-    "height": 480,
-    "url": "https://example.org/movie_thumbnail.png",
   }
 }
 ```
@@ -418,7 +418,7 @@ It is **required** that all media items should have the following properties:
     
 6. `isFamilyFriendly` - if the content is family friendly
     
-7. `thumbnail` or `image` - artwork to be displayed by the user agent. We recommend that these are [ImageObject](https://schema.org/ImageObject). This allows the user agent to pick the right artwork based on the size
+7. `image` - artwork to be displayed by the user agent. We recommend that these are [ImageObject](https://schema.org/ImageObject). This allows the user agent to pick the right artwork based on the size
 
 8. `potentialAction` - the action to watch the media. If the object is a [TVSeries](https://schema.org/TVSeries) and has an embedded [TVEpisode](https://schema.org/TVEpisode) then the `potentialAction` is only required on the [TVEpisode](https://schema.org/TVEpisode)
     
@@ -450,7 +450,7 @@ If an object is a TV series the following properties **are required**:
     
 2. `numberOfSeasons` - the total number of seasons a series has
 
-If the `thumbnail` or `image` is an ImageObject the following properties **are required**:
+If the `image` is an ImageObject the following properties **are required**:
 
 1. `width` - the width of the image in px
     
