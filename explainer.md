@@ -1,3 +1,4 @@
+
 # Media Feeds API Explainer
 
 Author: beccahughes@chromium.org
@@ -182,7 +183,7 @@ The user agent will then find the next episode in this series that should have a
   "containsSeason": {
     "@type": "TVSeason",
     "numberOfEpisodes": 10,
-    "episode": {
+    "episode": [{
       "@type": "TVEpisode",
       "@id": "https://example.org/example-tv-series?e=1&s=1",
       "duration": "PT5M49S",
@@ -201,8 +202,7 @@ The user agent will then find the next episode in this series that should have a
        },
        "name": "TV Episode 1 Name"
       },
-    },
-    "episode": {
+    }, {
       "@type": "TVEpisode",
       "@id": "https://example.org/example-tv-series?e=2&s=1",
       "episodeNumber": 2,
@@ -220,7 +220,7 @@ The user agent will then find the next episode in this series that should have a
       },
     },
     "seasonNumber": 1
-  },
+  }],
   "thumbnail": {
     "@type": "ImageObject",
     "width": 360,
@@ -241,7 +241,7 @@ Below is an example where a user has finished watching the first season and the 
   "genre": "Documentaries",
   "isFamilyFriendly": "http://schema.org/True",
   "name": "Cool TV Series",
-  "containsSeason": {
+  "containsSeason": [{
     "@type": "TVSeason",
     "numberOfEpisodes": 10,
     "episode": {
@@ -262,8 +262,7 @@ Below is an example where a user has finished watching the first season and the 
       },
     },
     "seasonNumber": 1
-  },
-  "containsSeason": {
+  }, {
     "@type": "TVSeason",
     "numberOfEpisodes": 10,
     "episode": {
@@ -284,7 +283,7 @@ Below is an example where a user has finished watching the first season and the 
       },
     },
     "seasonNumber": 2
-  },
+  }],
   "thumbnail": {
     "@type": "ImageObject",
     "width": 360,
@@ -395,8 +394,7 @@ If a site wishes to recommend a movie to a user they can use the [Movie](https:/
     "width": 360,
     "height": 480,
     "url": "https://example.org/movie_thumbnail.png",
-  },
-  "url": "https://example.org/watch/dream"
+  }
 }
 ```
  
