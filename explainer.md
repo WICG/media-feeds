@@ -414,7 +414,7 @@ It is **required** that all media items should have the following properties:
     
 4. `datePublished` - the timestamp the content was published
     
-5. `duration` - the duration of the content (only required for VideoObject and Movie)
+5. `duration` - the duration of the content (only required for VideoObject and Movie, also optional for videos that are live)
     
 6. `isFamilyFriendly` - if the content is family friendly
     

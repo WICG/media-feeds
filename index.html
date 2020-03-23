@@ -410,15 +410,42 @@
           </li>
           <li>
             If the <a>media item type</a> is a
-            <a data-cite="schema-org/Movie#">Movie</a> or a
-            <a data-cite="schema-org/VideoObject#">VideoObject</a> then the
-            user agent MUST also do the following:
+            <a data-cite="schema-org/Movie#">Movie</a> then the user agent MUST
+            also do the following:
 
             <ul>
               <li>
                 The <a data-cite="schema-org/duration#">duration</a> property MUST
                 contain a string that is valid duration in
                 <a data-cite="ISO8601#">ISO8601 format</a>.
+              </li>
+            </ul>
+          </li>
+          <li>
+            If the <a>media item type</a> is a
+            <a data-cite="schema-org/VideoObject#">VideoObject</a> and the
+            <a>media feed item</a> does not have <a>media item live metadata</a>
+            then the user agent MUST also do the following:
+
+            <ul>
+              <li>
+                The <a data-cite="schema-org/duration#">duration</a> property MUST
+                contain a string that is valid duration in
+                <a data-cite="ISO8601#">ISO8601 format</a>.
+              </li>
+            </ul>
+          </li>
+          <li>
+            If the <a>media item type</a> is a
+            <a data-cite="schema-org/VideoObject#">VideoObject</a> and the
+            <a>media feed item</a> does have <a>media item live metadata</a>
+            then the user agent MUST also do the following:
+
+            <ul>
+              <li>
+                The <a data-cite="schema-org/duration#">duration</a> property MAY be
+                present. If present, it MUST contain a string that is valid duration
+                in <a data-cite="ISO8601#">ISO8601 format</a>.
               </li>
             </ul>
           </li>
