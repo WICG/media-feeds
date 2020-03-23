@@ -61,7 +61,12 @@ Media Feeds should be [valid JSON+LD documents](https://www.w3.org/TR/json-ld11/
       "image": "https://www.example.org/profile_pic.jpg"
     },
     "name": "Media Site",
-    "logo": "https://www.example.org/logo.jpg" 
+    "logo": {
+      "@type": "ImageObject",
+      "width": 200,
+      "height": 200,
+      "url": "https://example.org/logo.jpg"
+    }
   }
 }
 ```
