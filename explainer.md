@@ -1,4 +1,4 @@
-# Media Feeds API Explainer
+# Media Feeds Explainer
 
 Author: beccahughes@chromium.org
 
@@ -30,7 +30,7 @@ Media Feeds provides a way for user agents to discover such feeds and provides a
 -   [MediaRSS/RSS](http://www.rssboard.org/media-rss#media-content) is an alternative, however it does not give us enough detail about whether the content is a TV show, movie as well as the structure around a TV series and seasons.
 
 
-## API Design
+## Design
 
 The website should advertise a media feed to the user agent by adding a `link` element to the head of the document. The `rel` attribute should be set to `feed` and the type should be set to `application/ld+json`. The `href` attribute should be on the same origin as the document URL. A user agent will automatically discover the media feed and store it to be fetched later.
 
