@@ -1,4 +1,3 @@
-
 # Media Feeds API Explainer
 
 Author: beccahughes@chromium.org
