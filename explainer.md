@@ -367,8 +367,6 @@ If a site wishes to recommend some live video content to a user they can add a [
 }
 ```
 
-If a site uses `DataFeed` (instead of `CompleteDataFeed`) then the user agent will merge the items together using the `@id` property. This means that a site could provide a live video in the feed and then when the video has ended it could update the original video by adding it to the feed with the same `@id` as before.
-
 ### A site recommends a movie to a user
 
 If a site wishes to recommend a movie to a user they can use the [Movie](https://schema.org/Movie) media item type. It is important to use the Movie type instead of the VideoObject type because a user agent might want to filter and group content into Movies, TV shows, etc.
