@@ -476,22 +476,18 @@
 
             <ul>
               <li>
-                The <a data-cite="schema-org/numberOfEpisodes#">
-                numberOfEpisodes</a> property MUST be a positive integer.
-              </li>
-              <li>
                 The <a data-cite="schema-org/numberOfSeasons#">
                 numberOfSeasons</a> property MUST be a positive integer.
               </li>
               <li>
-                The <a data-cite="schema-org/episode#">episode</a> property MAY
-                be present. If it is, it should contain a valid <a>media item
-                episode</a>.
+                The <a data-cite="schema-org/episode#">episode</a> property supports
+                <a>multiple values</a> and if present it MUST contain valid
+                <a>media item episodes</a>.
               </li>
               <li>
                 The <a data-cite="schema-org/containsSeason#">containsSeason</a>
-                property MAY be present. If it is, it should contain a valid
-                <a>media item season</a>.
+                property supports <a>multiple values</a> and if present it MUST
+                contain valid <a>media item seasons</a>.
               </li>
             </ul>
           </li>
@@ -724,9 +720,9 @@
               numberOfEpisodes</a> property MUST be a positive integer.
             </li>
             <li>
-              The <a data-cite="schema-org/episode#">episode</a> property MAY
-              be present. If it is, it should contain a valid <a>media item
-              episode</a>.
+              The <a data-cite="schema-org/episode#">episode</a> property supports
+              <a>multiple values</a> and if present it MUST contain valid
+              <a>media item episodes</a>.
             </li>
           </ul>
         </p>
@@ -969,8 +965,8 @@
     </section>
   </section>
 
-  <section id="continue-watching-play-next">
-    <h2>Continue Watching & Play Next</h2>
+  <section id="continue-watching">
+    <h2>Continue Watching</h2>
 
     <p>
       A user agent might want to display content for the user to continue
@@ -1005,6 +1001,54 @@
         </code>
       </pre>
     </div>
+  </section>
+
+  <section id="play-next-tv-episodes">
+    <h2>Play Next and TV Episodes</h2>
+
+    <p>
+      A <a>media feed item</a> that is a TV series can have up to two TV
+      episodes embedded in it. These can be embedded directly in the
+      <a>media feed item</a> or embedded within a <a>media item season</a>.
+      If there are more than two episodes they will be ignored.
+    </p>
+
+    <p>
+      The user agent MUST use the following steps to calculate the
+      <dfn>main TV episode</dfn>:
+
+      <ul>
+        <li>
+          If there are no <a>media item episodes</a> embedded in the
+          <a>media feed item</a>, then return null
+        </li>
+        <li>
+          If there is one <a>media item episode</a> embedded in the
+          <a>media feed item</a>, then return that
+        </li>
+        <li>
+          If there is more than one <a>media item episode</a> embedded in the
+          <a>media feed item</a>, then add them to <var>candidates</var>
+        </li>
+        <li>
+          Remove any <var>candidates</var> which do not have a
+          <a>media item action</a> with either a
+          <a data-cite="schema-org/CompletedActionStatus#">
+          https://schema.org/CompletedActionStatus</a> or
+          <a data-cite="schema-org/ActiveActionStatus#">
+          https://schema.org/ActiveActionStatus</a>
+        </li>
+        <li>
+          Sort the remaining <var>candidates</var> by
+          <a data-cite="schema-org/seasonNumber#">seasonNumber</a> and then
+          <a data-cite="schema-org/episodeNumber#">episodeNumber</a> in a
+          descending order
+        </li>
+        <li>
+          Return the first item in <var>candidates</var> or null if it is empty
+        </li>
+      </ul>
+    </p>
 
     <p>
       A user agent might want to display the next episode in a TV series to play
@@ -1015,47 +1059,39 @@
     <p>
       <ul>
         <li>
-          If the <a>media item type</a> is NOT
-          <a data-cite="schema-org/TVSeries#">TVSeries</a> then return null
+          If the <a>main TV episode</a> is null, then return null
         </li>
-
         <li>
-          Let <var>current episode</var> be the
-          <a data-cite="schema-org/TVEpsiode#">TVEpisode</a> which has
-          a <a>media item action</a> with either a
-          <a data-cite="schema-org/CompletedActionStatus#">
-          https://schema.org/CompletedActionStatus</a> or
-          <a data-cite="schema-org/ActiveActionStatus#">
-          https://schema.org/ActiveActionStatus</a>. If there is more than one
-          then we should use the <a data-cite="schema-org/episodeNumber#">
-          episodeNumber</a> and <a data-cite="schema-org/seasonNumber#">
-          seasonNumber</a> to find the latest one. If we cannot find a
-          <var>current episode</var> then return null
+          For each <a>media item episode</a> embedded in the
+          <a>media feed item</a>, add it to <var>candidates</var>
         </li>
-
         <li>
-          Let <var>next episode number</var> be the <var>current episode</var>
+          Remove any <var>candidates</var> which do not have a
+          <a>media item action</a> with a
+          <a data-cite="schema-org/PendingActionStatus#">
+          https://schema.org/PendingActionStatus</a>
+        </li>
+        <li>
+          Let <var>next episode number</var> be the <var>main TV episode</var>
           number plus 1
         </li>
-
         <li>
-          Let <var>next season number</var> be the <var>current episode</var>
+          Let <var>next season number</var> be the <var>main TV episode</var>
           season number
         </li>
-
         <li>
           If the <var>next episode number</var> is greater than the
           <a data-cite="schema-org/numberOfEpisodes#">numberOfEpisodes</a>
           in the season; then set <var>next episode number</var> to 1 and
           increment the <var>next season number</var> by 1
         </li>
-
         <li>
-          Return the <a data-cite="schema-org/TVEpsiode#">TVEpisode</a>
-          which has the <a data-cite="schema-org/episodeNumber#">
-          episodeNumber</a> equal to <var>next epsiode number</var> and the
+          Find the <a>media item episode</a> in <var>candidates</var> which
+          has the <a data-cite="schema-org/episodeNumber#">episodeNumber</a>
+          equal to <var>next epsiode number</var> and the
           <a data-cite="schema-org/seasonNumber#">
-          seasonNumber</a> equal to <var>next season number</var>
+          seasonNumber</a> equal to <var>next season number</var>.
+          If there is no matching <a>media item episode</a> return null
         </li>
       </ul>
     </p>
