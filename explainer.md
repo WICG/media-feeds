@@ -444,9 +444,7 @@ If an object is a TV season the following properties **are required**:
 
 If an object is a TV series the following properties **are required**:
     
-1. `numberOfEpisodes` - the total number of episodes a season has
-    
-2. `numberOfSeasons` - the total number of seasons a series has
+1. `numberOfSeasons` - the total number of seasons a series has
 
 If the `image` is an ImageObject the following properties **are required**:
 
