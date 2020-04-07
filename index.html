@@ -1062,6 +1062,16 @@
           If the <a>main TV episode</a> is null, then return null
         </li>
         <li>
+          For each <a>media item episode</a> embedded in the
+          <a>media feed item</a>, add it to <var>candidates</var>
+        </li>
+        <li>
+          Remove any <var>candidates</var> which do not have a
+          <a>media item action</a> with a
+          <a data-cite="schema-org/PendingActionStatus#">
+          https://schema.org/PendingActionStatus</a>
+        </li>
+        <li>
           Let <var>next episode number</var> be the <var>main TV episode</var>
           number plus 1
         </li>
@@ -1076,11 +1086,12 @@
           increment the <var>next season number</var> by 1
         </li>
         <li>
-          Return the <a>media item episode</a> which has the
-          <a data-cite="schema-org/episodeNumber#">episodeNumber</a>
+          Find the <a>media item episode</a> in <var>candidates</var> which
+          has the <a data-cite="schema-org/episodeNumber#">episodeNumber</a>
           equal to <var>next epsiode number</var> and the
           <a data-cite="schema-org/seasonNumber#">
-          seasonNumber</a> equal to <var>next season number</var>
+          seasonNumber</a> equal to <var>next season number</var>.
+          If there is no matching <a>media item episode</a> return null
         </li>
       </ul>
     </p>
