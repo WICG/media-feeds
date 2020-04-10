@@ -446,10 +446,6 @@ If an object is a TV season the following properties **are required**:
     
 2. `numberOfEpisodes` - the total number of episodes a series has
 
-If an object is a TV series the following properties **are required**:
-    
-1. `numberOfSeasons` - the total number of seasons a series has
-
 If an object is a TV episode the following properties **are required**:
 
 1. `episodeNumber` - the number of the episode in the TV series or season, should be sequential
