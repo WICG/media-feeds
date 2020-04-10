@@ -416,7 +416,7 @@ It is **required** that all media items should have the following properties:
     
 6. `isFamilyFriendly` - if the content is family friendly
     
-7. `image` - artwork to be displayed by the user agent. We recommend that these are [ImageObject](https://schema.org/ImageObject). This allows the user agent to pick the right artwork based on the size
+7. `image` - artwork to be displayed by the user agent. These should be [ImageObject](https://schema.org/ImageObject). This allows the user agent to pick the right artwork based on the size
 
 8. `potentialAction` - the action to watch the media. If the object is a [TVSeries](https://schema.org/TVSeries) and has an embedded [TVEpisode](https://schema.org/TVEpisode) then the `potentialAction` is only required on the [TVEpisode](https://schema.org/TVEpisode)
     
@@ -427,6 +427,10 @@ It is *suggested* that the media items have the following properties:
 2. `contentRating` - the content rating of the content (e.g. PG-18)
     
 3. `genre` - the genre of the content
+
+4. `identifier` - the identifiers of the content in third party systems
+
+5. `publication` - if the TV episode is live this contains metadata about the broadcast (only for VideoObject and Movie)
 
 WatchActions should be present in the `potentialAction` property and have the following requirements:
 
@@ -445,6 +449,24 @@ If an object is a TV season the following properties **are required**:
 If an object is a TV series the following properties **are required**:
     
 1. `numberOfSeasons` - the total number of seasons a series has
+
+If an object is a TV episode the following properties **are required**:
+
+1. `episodeNumber` - the number of the episode in the TV series or season, should be sequential
+
+2. `duration` - the duration of the content
+
+3. `name` - the name of the episode
+
+4. `image` - artwork to be displayed by the user agent. These should be [ImageObject](https://schema.org/ImageObject). This allows the user agent to pick the right artwork based on the size
+
+5. `potentialAction` - the action to watch the media.
+
+It is *suggested* that the TV episode items have the following properties:
+
+1. `identifier` - the identifiers of the content in third party systems
+
+2. `publication` - if the TV episode is live this contains metadata about the broadcast
 
 If the `image` is an ImageObject the following properties **are required**:
 
