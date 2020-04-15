@@ -171,7 +171,7 @@ If the media item url will not resume playback at the correct time, then the `ta
 
 ### A site recommends a TV episode / season for a user to play next
 
-In a TV Series it is common for a user to be approaching the end of a TV Episode and for the site to recommend for a user to play the next episode. For a site to do this they can use the [TVSeries](https://schema.org/TVSeries) media item. This should embed a TVEpisode that has either an [ActiveActionStatus](https://schema.org/ActiveActionStatus) `WatchAction` that denotes the user is close to the end, or a [CompleteActionStatus](https://schema.org/CompleteActionStatus) `WatchAction` that denotes the user has finished watching this episode.
+In a TV Series it is common for a user to be approaching the end of a TV Episode and for the site to recommend for a user to play the next episode. For a site to do this they can use the [TVSeries](https://schema.org/TVSeries) media item. This should embed a TVEpisode that has either an [ActiveActionStatus](https://schema.org/ActiveActionStatus) `WatchAction` that denotes the user is close to the end, or a [CompletedActionStatus](https://schema.org/CompletedActionStatus) `WatchAction` that denotes the user has finished watching this episode.
 
 The user agent will then find the next episode in this series that should have a [PendingActionStatus](https://schema.org/PendingActionStatus) `WatchAction` to denote the user has not started watching this episode. The episodes should have an `episodeNumber` set and the next episode should have a number that is the current episode + 1.
 
@@ -260,7 +260,7 @@ Below is an example where a user has finished watching the first season and the 
       "episodeNumber": 10,
       "potentialAction": {
         "@type": "WatchAction",
-        "actionStatus": "http://schema.org/CompleteActionStatus"
+        "actionStatus": "http://schema.org/CompletedActionStatus"
       },
       "image": {
         "@type": "ImageObject",
