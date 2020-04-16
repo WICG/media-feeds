@@ -118,7 +118,6 @@ If a site wishes to recommend a generic video to a user they can use the [VideoO
     "url": "https://example.org/testuser"
   },
   "datePublished": "2020-01-27",
-  "description": "This is a video that is about a bunny."
   "duration": "PT5M49S",
   "genre": "Animated Shorts",
   "image": {
@@ -167,7 +166,6 @@ If the media item url will not resume playback at the correct time, then the `ta
     "url": "https://example.org/testuser"
   },
   "datePublished": "2020-01-27",
-  "description": "This is a video that is about a bunny."
   "duration": "PT5M49S",
   "genre": "Animated Shorts",
   "image": {
@@ -208,7 +206,6 @@ The user agent will then find the next episode in this series that should have a
   "@context": "http://schema.org/",
   "@type": "TVSeries",
   "@id": "https://example.org/example-tv-series",
-  "description": "This is a docuseries about something cool."
   "genre": "Documentaries",
   "image": {
     "@type": "ImageObject",
@@ -284,7 +281,6 @@ Below is an example where a user has finished watching the first season and the 
   "@context": "http://schema.org/",
   "@type": "TVSeries",
   "@id": "https://example.org/example-tv-series",
-  "description": "This is a docuseries about something cool."
   "genre": "Documentaries",
   "image": {
     "@type": "ImageObject",
@@ -364,7 +360,6 @@ If a site wishes to recommend a TV series to a user they can use the [TVSeries](
   "@context": "http://schema.org/",
   "@type": "TVSeries",
   "@id": "https://example.org/tv-series",
-  "description": "This is a docuseries about something cool."
   "genre": "Documentaries",
   "image": {
     "@type": "ImageObject",
@@ -388,50 +383,51 @@ If a site wishes to recommend a TV series to a user they can use the [TVSeries](
 
 ### A site recommends some live video content to a user
 
-If a site wishes to recommend some live video content to a user they can add a [BroadcastEvent](https://schema.org/BroadcastEvent) in the publication property (this is also on the TVEpisode and Movie media item types as well). The event should have the `isLiveBroadcast` property set to true and the `startDate` property set to the time the broadcast started. The `endDate` should be included too if known.
+If a site wishes to recommend some media that is being broadcast or streamed they can add a [BroadcastEvent](https://schema.org/BroadcastEvent) to the feed. This is a special type that describes a broadcast schedule or a live stream and embeds the media item being broadcast in the `workPerformed` property.
 
 ```js
 {
-  "@context": "http://schema.org/",
-  "@type": "VideoObject",
-  "@id": "https://example.org/video",
-  "author": {
-    "@type": "Person",
-    "name": "Test User",
-    "url": "https://example.org/testuser"
-  },
-  "datePublished": "2020-01-27",
-  "description": "This is a video that is about a bunny."
-  "duration": "PT5M49S",
-  "genre": "Animated Shorts",
-  "image": {
-    "@type": "ImageObject",
-    "width": 360,
-    "height": 480,
-    "url": "https://example.org/video_thumbnail.png",
-    "additionalProperty": {
-      "@type": "PropertyValue",
-      "name": "contentAttributes",
-      "value": ["iconic", "poster", "hasTitle"]
-    }
-  },
-  "interactionStatistic": {
-    "@type": "InteractionCounter",
-    "interactionType": "http://schema.org/WatchAction",
-    "userInteractionCount": "4356"
-  },
-  "isFamilyFriendly": "http://schema.org/True",
-  "name": "Big Buck Bunny",
+  "@context": "https://schema.org/",
+  "@type": "BroadcastEvent",
+  "@id": "https://example.org/event",
+  "isLiveBroadcast": "http://schema.org/True",
+  "startDate": "2020-01-28T06:00:00+0000",
+  "endDate": "2020-01-28T07:00:00+0000",
   "potentialAction": {
     "@type": "WatchAction",
     "target": "https://example.org/watch/video"
   },
-  "publication": {
-    "@type": "BroadcastEvent",
-    "isLiveBroadcast": "http://schema.org/True",
-    "startDate": "2020-01-28T06:00:00+0000",
-    "endDate": "2020-01-28T07:00:00+0000"
-  } 
+  "workPerformed": {
+    "@context": "https://schema.org/",
+    "@type": "VideoObject",
+    "@id": "https://example.org/video",
+    "author": {
+      "@type": "Person",
+      "name": "Test User",
+      "url": "https://example.org/testuser"
+    },
+    "datePublished": "2020-01-27",
+    "duration": "PT5M49S",
+    "genre": "Animated Shorts",
+    "image": {
+      "@type": "ImageObject",
+      "width": 360,
+      "height": 480,
+      "url": "https://example.org/video_thumbnail.png",
+      "additionalProperty": {
+        "@type": "PropertyValue",
+        "name": "contentAttributes",
+        "value": ["iconic", "poster", "hasTitle"]
+      }
+    },
+    "interactionStatistic": {
+      "@type": "InteractionCounter",
+      "interactionType": "http://schema.org/WatchAction",
+      "userInteractionCount": "4356"
+    },
+    "isFamilyFriendly": "http://schema.org/True",
+    "name": "Big Buck Bunny"
+  }
 }
 ```
 
@@ -450,7 +446,6 @@ If a site wishes to recommend a movie to a user they can use the [Movie](https:/
     "ratingValue": "PG-13"
   }
   "datePublished": "2020-01-27",
-  "description": "This is a movie about a dream."
   "duration": "PT5M49S",
   "genre": "Animated",
   "image": {
@@ -477,7 +472,7 @@ If a site wishes to recommend a movie to a user they can use the [Movie](https:/
 
 It is **required** that all media items should have the following properties:
 
-1. `@id` - this should be unique
+1. `@id` - this should be unique across all ids in the feed
     
 2. `name` - the name of the content
     
@@ -491,7 +486,7 @@ It is **required** that all media items should have the following properties:
     
 7. `image` - artwork to be displayed by the user agent. These should be [ImageObject](https://schema.org/ImageObject). This allows the user agent to pick the right artwork based on the size
 
-8. `potentialAction` - the action to watch the media. If the object is a [TVSeries](https://schema.org/TVSeries) and has an embedded [TVEpisode](https://schema.org/TVEpisode) then the `potentialAction` is only required on the [TVEpisode](https://schema.org/TVEpisode)
+8. `potentialAction` - the action to watch the media. If the object is a [TVSeries](https://schema.org/TVSeries) and has an embedded [TVEpisode](https://schema.org/TVEpisode) then the `potentialAction` is only required on the [TVEpisode](https://schema.org/TVEpisode). The `potentialAction` is also not required on items that are embedded in a broadcast event.
     
 It is *suggested* that the media items have the following properties:
 
@@ -502,8 +497,6 @@ It is *suggested* that the media items have the following properties:
 3. `genre` - the genre of the content
 
 4. `identifier` - the identifiers of the content in third party systems
-
-5. `publication` - if the TV episode is live this contains metadata about the broadcast (only for VideoObject and Movie)
 
 WatchActions should be present in the `potentialAction` property and have the following requirements:
 
@@ -535,8 +528,6 @@ It is *suggested* that the TV episode items have the following properties:
 
 1. `identifier` - the identifiers of the content in third party systems
 
-2. `publication` - if the TV episode is live this contains metadata about the broadcast
-
 If the `image` is an ImageObject the following properties **are required**:
 
 1. `width` - the width of the image in px
@@ -547,13 +538,19 @@ If the `image` is an ImageObject the following properties **are required**:
 
 4. `additionalProperty` - this can contain a `contentAttributes` property which contains an array of different attributes that tell the user agent about the contents of the image
     
-If the media item is a live broadcast it **must have** a `publication` property set to BroadcastEvent with the following properties:
+It is **required** that all media feed broadcast events have the following properties:
 
-1. `isLiveBroadcast` **must be** set to true
+1. `@id` - this should be unique across all ids in the feed
+
+2. `isLiveBroadcast` **must be** set to true or false
     
-2. `startDate` **must be** present and set to the datetime the broadcast started
+3. `startDate` **must be** present and set to the datetime the broadcast started
     
-3. `endDate` is optional *if known*
+4. `endDate` is optional *if known*
+
+5. `potentialAction` - the action to watch the media
+
+6. `workPerformed` - contains an embedded media feed item that is the media being broadcast
     
 **Any media items that do not have the required properties, or properties that are set to non-standard values will be ignored.**
 

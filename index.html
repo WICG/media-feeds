@@ -227,7 +227,8 @@
           <li>
             The <a data-cite="schema-org/dataFeedElement#">dataFeedElement</a>
             property supports <a>multiple values</a> and if present it MUST
-            contain valid <a>media feed items</a>.
+            contain valid <a>media feed items</a> or
+            <a>media feed broadcast events</a>.
           </li>
         </ul>
       </p>
@@ -406,7 +407,8 @@
           <li>
             The <a data-cite="schema-org/potentialAction#">
             potentialAction</a> property MUST be a valid <a>media item
-            action</a> unless the object has an <a>embedded watch action</a>.
+            action</a> unless the object has an <a>embedded watch action</a>
+            OR the item is embedded in a <a>media feed broadcast event</a>.
           </li>
           <li>
             The <a data-cite="schema-org/interactionStatistic#">
@@ -441,11 +443,6 @@
                 contain a string that is valid duration in
                 <a data-cite="ISO8601#">ISO8601 format</a>.
               </li>
-              <li>
-                The <a data-cite="schema-org/publication#">publication</a> property
-                MAY be present. If it is present, it MUST contain a valid
-                <a>media item live metadata</a>.
-              </li>
             </ul>
           </li>
           <li>
@@ -459,37 +456,11 @@
                 contain a valid <a>media item author</a>.
               </li>
               <li>
-                The <a data-cite="schema-org/publication#">publication</a> property
-                MAY be present. If it is present, it MUST contain a valid
-                <a>media item live metadata</a>.
-              </li>
-            </ul>
-          </li>
-          <li>
-            If the <a>media item type</a> is a
-            <a data-cite="schema-org/VideoObject#">VideoObject</a> and the
-            <a>media feed item</a> does not have <a>media item live metadata</a>
-            then the user agent MUST also do the following:
-
-            <ul>
-              <li>
-                The <a data-cite="schema-org/duration#">duration</a> property MUST
-                contain a string that is valid duration in
+                The <a data-cite="schema-org/duration#">duration</a> property
+                is only required if the item is embedded in a
+                <a>media feed broadcast event</a> otherwise it is optional.
+                If present, it MUST contain a string that is valid duration in
                 <a data-cite="ISO8601#">ISO8601 format</a>.
-              </li>
-            </ul>
-          </li>
-          <li>
-            If the <a>media item type</a> is a
-            <a data-cite="schema-org/VideoObject#">VideoObject</a> and the
-            <a>media feed item</a> does have <a>media item live metadata</a>
-            then the user agent MUST also do the following:
-
-            <ul>
-              <li>
-                The <a data-cite="schema-org/duration#">duration</a> property MAY be
-                present. If present, it MUST contain a string that is valid duration
-                in <a data-cite="ISO8601#">ISO8601 format</a>.
               </li>
             </ul>
           </li>
@@ -513,6 +484,113 @@
           </li>
         </ul>
       </p>
+    </section>
+
+    <section id="media-feed-broadcast-event">
+      <h3>Media Feed Broadcast Event</h2>
+
+      <p>
+        The <dfn>media feed broadcast event</dfn> describes a media
+        recommendation that could be the broadcasting schedule of a show
+        or a live streaming event on the internet. It contains an embedded
+        <a>media feed item</a> that is the media recommendation that is
+        being broadcast.
+      </p>
+
+      <p>
+        <ul>
+          The user agent MUST validate every <a>media feed broadcast event</a>
+          using the following steps:
+
+          <li>
+            The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+            set to <a data-cite="schema-org/BroadcastEvent#">BroadcastEvent</a>.
+          </li>
+          <li>
+            The <a data-cite="json-ld11#node-identifiers">@id</a> property MUST
+            be set and contain a valid <a>media item ID</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/isLiveBroadcast#">isLiveBroadcast</a>
+            property MUST contain a <a>schema.org boolean property</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/workPerformed#">workPerformed</a> property
+            MUST contain a valid <a>media feed item</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/potentialAction#">
+            potentialAction</a> property MUST be a valid <a>media item
+            action</a> unless the object has an <a>embedded watch action</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/startDate#">startDate</a> property MUST
+            contain a string that is valid date or date time in
+            <a data-cite="ISO8601#">ISO8601 format</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/endDate#">endDate</a> property MAY
+            be present. If it is, it MUST contain a string that is valid
+            date or date time in <a data-cite="ISO8601#">ISO8601 format</a>.
+          </li>
+        </ul>
+      </p>
+
+      <div class="example" id="example-2-broadcast-event">
+        <div class="marker">
+            <a class="self-link" href="#example-2-broadcast-event">
+              Example<bdi> 2</bdi>
+            </a>
+            <span class="example-title">: Broadcast Event</span>
+        </div>
+
+        <p>
+          Below is an example of a video that is being live streamed.
+        </p>
+
+        <pre>
+          <code class="json">
+            {
+              "@context": "https://schema.org/",
+              "@type": "BroadcastEvent",
+              "@id": "https://example.org/event",
+              "isLiveBroadcast": "http://schema.org/True",
+              "startDate": "2020-01-28T06:00:00+0000",
+              "endDate": "2020-01-28T07:00:00+0000",
+              "potentialAction": {
+                "@type": "WatchAction",
+                "target": "https://example.org/watch/video"
+              },
+              "workPerformed": {
+                "@context": "https://schema.org/",
+                "@type": "VideoObject",
+                "@id": "https://example.org/video",
+                "author": {
+                  "@type": "Person",
+                  "name": "Test User",
+                  "url": "https://example.org/testuser"
+                },
+                "datePublished": "2020-01-27",
+                "duration": "PT5M49S",
+                "genre": "Animated Shorts",
+                "image": {
+                  "@type": "ImageObject",
+                  "width": 360,
+                  "height": 480,
+                  "url": "https://example.org/video_thumbnail.png"
+                },
+                "interactionStatistic": {
+                  "@type": "InteractionCounter",
+                  "interactionType": "http://schema.org/WatchAction",
+                  "userInteractionCount": "4356"
+                },
+                "isFamilyFriendly": "http://schema.org/True",
+                "name": "Big Buck Bunny"
+              }
+            }
+          </code>
+        </pre>
+      </div>
     </section>
 
     <section id="media-item-action">
@@ -602,38 +680,6 @@
           </ul>
         </p>
     </section>
-
-    <section id="media-item-live-metadata">
-      <h3>Media Item Live Metadata</h2>
-
-        <p>
-          The <dfn>media item live metadata</dfn> should be a
-          be a <a data-cite="schema-org/BroadcastEvent#">BroadcastEvent</a>.
-          The user agent MUST use the following steps to validate it:
-
-          <ul>
-            <li>
-              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-              set to <a data-cite="schema-org/BroadcastEvent#">BroadcastEvent</a>.
-            </li>
-            <li>
-              The <a data-cite="schema-org/isLiveBroadcast#">isLiveBroadcast</a>
-              property MUST be set to <code>true</code>.
-            </li>
-            <li>
-              The <a data-cite="schema-org/startDate#">startDate</a> property MUST
-              contain a string that is valid date or date time in
-              <a data-cite="ISO8601#">ISO8601 format</a>.
-            </li>
-            <li>
-              The <a data-cite="schema-org/endDate#">endDate</a> property MAY
-              be present. It it is, it MUST contain a string that is valid
-              date or date time in <a data-cite="ISO8601#">ISO8601 format</a>.
-            </li>
-          </ul>
-        </p>
-    </section>
-
 
     <section id="media-item-interaction-statistic">
       <h3>Media Item Interaction Statistic</h2>
@@ -793,11 +839,6 @@
               The <a data-cite="schema-org/potentialAction#">
               potentialAction</a> property MUST contain a valid
               <a>media item action</a>.
-            </li>
-            <li>
-              The <a data-cite="schema-org/publication#">publication</a> property
-              MAY be present. If it is present, it MUST contain a valid
-              <a>media item live metadata</a>.
             </li>
           </ul>
         </p>
@@ -1131,10 +1172,10 @@
         these MAY be ignored by the user agent.
       </p>
 
-      <div class="example" id="example-2-multiple-values">
+      <div class="example" id="example-3-multiple-values">
         <div class="marker">
-            <a class="self-link" href="#example-2-multiple-values">
-              Example<bdi> 2</bdi>
+            <a class="self-link" href="#example-3-multiple-values">
+              Example<bdi> 3</bdi>
             </a>
             <span class="example-title">: Multiple Values</span>
         </div>
