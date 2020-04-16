@@ -248,7 +248,7 @@
           <li>
             The <a data-cite="schema-org/logo#">logo</a> property supports
             <a>multiple values</a> and MUST contain a maximum of 5 different
-            <a>media images</a>.
+            <a>media logos</a>.
           </li>
           <li>
             The <a data-cite="schema-org/member#">member</a> property MUST
@@ -307,7 +307,30 @@
                   "image": "https://www.example.org/profile_pic.jpg"
                 },
                 "name": "Media Site",
-                "logo": "https://www.example.org/logo.jpg"
+                "logo": [
+                  {
+                    "@type": "ImageObject",
+                    "width": 336,
+                    "height": 188,
+                    "url": "https://beccahughes.github.io/logo-dark-title-transparent.png",
+                    "additionalProperty": {
+                      "@type": "PropertyValue",
+                      "name": "contentAttributes",
+                      "value": ["forDarkBackground", "hasTitle", "transparentBackground"]
+                    }
+                  },
+                  {
+                    "@type": "ImageObject",
+                    "width": 336,
+                    "height": 188,
+                    "url": "https://beccahughes.github.io/logo-light-title-transparent.png",
+                    "additionalProperty": {
+                      "@type": "PropertyValue",
+                      "name": "contentAttributes",
+                      "value": ["forLightBackground", "hasTitle", "transparentBackground"]
+                    }
+                  }
+                ]
               }
             }
           </code>
@@ -378,7 +401,7 @@
           <li>
             The <a data-cite="schema-org/image#">image</a> property supports
             <a>multiple values</a> and MUST contain a maximum of 5 different
-            <a>media images</a>.
+            <a>media content images</a>.
           </li>
           <li>
             The <a data-cite="schema-org/potentialAction#">
@@ -764,7 +787,7 @@
             <li>
               The <a data-cite="schema-org/image#">image</a> property supports
               <a>multiple values</a> and if present it MUST contain a maximum
-              of 5 valid <a>media images</a>.
+              of 5 valid <a>media content images</a>.
             </li>
             <li>
               The <a data-cite="schema-org/potentialAction#">
@@ -783,35 +806,229 @@
     <section id="media-image">
       <h3>Media Image</h2>
 
-        <p>
-          The <dfn>media image</dfn> can be a string containg a valid
-          <a data-cite="url#urls">URL</a> to an image. It can also be an
-          <a data-cite="schema-org/ImageObject#">ImageObject</a>. If it is an
-          <a data-cite="schema-org/ImageObject#">ImageObject</a> then the user
-          agent MUST use the following steps to validate it:
+      <p>
+        The <dfn>media image</dfn> represents an image that can be a
+        thumbnail that represents the content or it could be the logo
+        for the feed. It has a number of <dfn>content attributes</dfn>
+        that describe the image's type and defines its suggested usages.
+        Depending on where the <a>media image</a> is embeeded there are
+        different requirements for <a>content attributes</a>.
+      </p>
 
-          <ul>
-            <li>
-              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-              set to <a data-cite="schema-org/ImageObject#">ImageObject</a>.
-            </li>
-            <li>
-              The <a data-cite="schema-org/width#">width</a> property MUST
-              contain a positive integer that is the width of the image in
-              pixels.
-            </li>
-            <li>
-              The <a data-cite="schema-org/height#">height</a> property MUST
-              contain a positive integer that is the height of the image in
-              pixels.
-            </li>
-            <li>
-              The <a data-cite="schema-org/embedUrl#">embedUrl</a> property or
-              <a data-cite="schema-org/url#">url</a> property MUST contain
-              a valid <a data-cite="url#urls">URL</a>.
-            </li>
-          </ul>
-        </p>
+      <p>
+        The user agent MUST use the following steps to validate it:
+
+        <ul>
+          <li>
+            The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+            set to <a data-cite="schema-org/ImageObject#">ImageObject</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/width#">width</a> property MUST
+            contain a positive integer that is the width of the image in
+            pixels.
+          </li>
+          <li>
+            The <a data-cite="schema-org/height#">height</a> property MUST
+            contain a positive integer that is the height of the image in
+            pixels.
+          </li>
+          <li>
+            The <a data-cite="schema-org/embedUrl#">embedUrl</a> property or
+            <a data-cite="schema-org/url#">url</a> property MUST contain
+            a valid <a data-cite="url#urls">URL</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/additionalProperty#">additionalProperty</a>
+            property MAY be present. If present, it must contain a
+            <a data-cite="schema-org/PropertyValue#">PropertyValue</a> object and
+            the user agent MUST use the following steps to validate it:
+
+            <ul>
+              <li>
+                The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+                set to <a data-cite="schema-org/PropertyValue#">PropertyValue</a>.
+              </li>
+              <li>
+                The <a data-cite="schema-org/name#">name</a> property MUST contain
+                <code>contentAttributes</code>.
+              </li>
+              <li>
+                The <a data-cite="schema-org/value#">value</a> property supports
+                <a>multiple values</a> and if present it MUST contain non empty
+                strings. These are the <a>content attributes</a> for the
+                <a>media image</a>.
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        A <dfn>media logo</dfn> is a <a>media image</a> that is the logo for the
+        website providing the feed. The following <a>content attributes</a> are
+        required for the logo to be valid:
+
+        <ul>
+          <li>
+            One <a>background suitability</a> attribute.
+          </li>
+          <li>
+            One <a>title</a> attribute.
+          </li>
+          <li>
+            Optionally, a <a>predominant figure position</a> attribute.
+          </li>
+          <li>
+            Optionally, the <a>transparent background</a> attribute.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        A <dfn>media content image</dfn> is a <a>media image</a> that is the
+        thumbnail or poster for the media. The <a>media content image</a>
+        does not require any <a>content attributes</a> to be valid, but it
+        does support the following:
+
+        <ul>
+          <li>
+            Optionally, a <a>content type</a> attribute.
+          </li>
+          <li>
+            Optionally, a <a>recommended use</a> attribute.
+          </li>
+          <li>
+            Optionally, a <a>title</a> attribute.
+          </li>
+          <li>
+            Optionally, a <a>background suitability</a> attribute.
+          </li>
+          <li>
+            Optionally, a <a>predominant figure position</a> attribute.
+          </li>
+          <li>
+            Optionally, the <a>transparent background</a> attribute.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        A <dfn>content type</dfn> attribute indicates to the user agent what
+        type of content the <a>media image</a> contains. There can only ever
+        be one <a>content type</a> <a>content attribute</a> per image.
+        The attributes are defined as the following:
+
+        <ul>
+          <li>
+            <code>iconic</code>: The image is an artistic render of the show.
+            This is usually a poster or banner.
+          </li>
+          <li>
+            <code>sceneStill</code>: The image is a still/framegrab from the
+            media item.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        A <dfn>recommended use</dfn> attribute indicates to the user agent 
+        where the <a>media image</a> can be used. There can only ever
+        be one <a>recommended use</a> <a>content attribute</a> per image.
+        The attributes are defined as the following:
+
+        <ul>
+          <li>
+            <code>poster</code>: The image is a poster image for the show.
+          </li>
+          <li>
+            <code>background</code>: This image is suitable for being used as
+            a background and does not contain text.
+          </li>
+        </ul>
+      </p>
+
+      <figure id="content-attributes-example">
+        <figcaption>
+          The image on the left would have the <code>iconic</code>,
+          <code>poster</code> and <code>hasTitle</code> attributes.
+          The image on the right would have the <code>sceneStill</code>,
+          <code>background</code> and <code>noTitle</code> attributes.
+        </figcaption>
+        <img src="images/content_type.png" />
+      </figure>
+
+      <p>
+        A <dfn>background suitability</dfn> attribute indicates to the user agent
+        whether the <a>media image</a> is suitable for display on different
+        backgrounds. This is important for images that have a transparent
+        background. There can only ever be one <a>background suitability</a>
+        <a>content attribute</a> per image. The attributes are defined as the 
+        following:
+
+        <ul>
+          <li>
+            <code>forDarkBackground</code>: The image is suitable for use on a
+            dark background.
+          </li>
+          <li>
+            <code>forLightBackground</code>: The image is suitable for use on a
+            light background.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        A <dfn>title</dfn> attribute indicates to the user agent whether the
+        <a>media image</a> has a title included with the image. This is
+        important for images that are logos that might be an icon or an icon
+        with a title. There can only ever be one <a>title</a>
+        <a>content attribute</a> per image. The attributes are defined as the 
+        following:
+
+        <ul>
+          <li>
+            <code>hasTitle</code>: The image includes the title of the media
+            item or website.
+          </li>
+          <li>
+            <code>noTitle</code>: The image does not include the title.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        The <dfn>transparent background</dfn> attribute indicates to the user
+        agent that the <a>media image</a> has a transparent background. This
+        is usually used for images that are the logo of the website. If this 
+        is the case the <code>transparentBackground</code>
+        <a>content attribute</a> should be present.
+      </p>
+
+      <p>
+        A <dfn>predominant figure position</dfn> attribute indicates to the
+        user agent where the predominant figure of is positioned in the
+        <a>media image</a>. There can only ever be one
+        <a>predominant figure position</a> <a>content attribute</a> per image.
+        The attributes are defined as the following:
+
+        <ul>
+          <li>
+            <code>centered</code>: The predominant figure is positioned at
+            the center of the image.
+          </li>
+          <li>
+            <code>rightCentered</code>: The predominant figure is positioned
+            to the right of the image and the left side is empty and can
+            be used for text overlays.
+          </li>
+          <li>
+            <code>leftCentered</code>: The predominant figure is positioned
+            to the left of the image and the left side is empty and can
+            be used for text overlays.
+          </li>
+        </ul>
+      </p>
     </section>
 
     <section id="media-item-identifier">
