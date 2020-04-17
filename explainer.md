@@ -61,12 +61,30 @@ Media Feeds should be [valid JSON+LD documents](https://www.w3.org/TR/json-ld11/
       "image": "https://www.example.org/profile_pic.jpg"
     },
     "name": "Media Site",
-    "logo": {
-      "@type": "ImageObject",
-      "width": 200,
-      "height": 200,
-      "url": "https://example.org/logo.jpg"
-    }
+    "logo": [
+      {
+        "@type": "ImageObject",
+        "width": 336,
+        "height": 188,
+        "url": "https://beccahughes.github.io/logo-dark-title-transparent.png",
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "contentAttributes",
+          "value": ["forDarkBackground", "hasTitle", "transparentBackground"]
+        }
+      },
+      {
+        "@type": "ImageObject",
+        "width": 336,
+        "height": 188,
+        "url": "https://beccahughes.github.io/logo-light-title-transparent.png",
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "contentAttributes",
+          "value": ["forLightBackground", "hasTitle", "transparentBackground"]
+        }
+      }
+    ]
   }
 }
 ```
@@ -107,7 +125,12 @@ If a site wishes to recommend a generic video to a user they can use the [VideoO
     "@type": "ImageObject",
     "width": 360,
     "height": 480,
-    "url": "https://example.org/video_thumbnail.png"
+    "url": "https://example.org/video_thumbnail.png",
+    "additionalProperty": {
+      "@type": "PropertyValue",
+      "name": "contentAttributes",
+      "value": ["iconic", "poster", "hasTitle"]
+    }
   },
   "interactionStatistic": {
     "@type": "InteractionCounter",
@@ -151,7 +174,12 @@ If the media item url will not resume playback at the correct time, then the `ta
     "@type": "ImageObject",
     "width": 360,
     "height": 480,
-    "url": "https://example.org/video_thumbnail.png"
+    "url": "https://example.org/video_thumbnail.png",
+    "additionalProperty": {
+      "@type": "PropertyValue",
+      "name": "contentAttributes",
+      "value": ["sceneStill", "background", "noTitle"]
+    }
   },
   "interactionStatistic": {
     "@type": "InteractionCounter",
@@ -186,7 +214,12 @@ The user agent will then find the next episode in this series that should have a
     "@type": "ImageObject",
     "width": 360,
     "height": 480,
-    "url": "https://example.org/video_thumbnail.png"
+    "url": "https://example.org/video_thumbnail.png",
+    "additionalProperty": {
+      "@type": "PropertyValue",
+      "name": "contentAttributes",
+      "value": ["iconic", "poster", "hasTitle"]
+    }
   },
   "isFamilyFriendly": "http://schema.org/True",
   "name": "Cool TV Series",
@@ -208,7 +241,12 @@ The user agent will then find the next episode in this series that should have a
         "@type": "ImageObject",
         "width": 360,
         "height": 480,
-        "url": "https://example.org/tv_s1_e1_thumbnail.png"
+        "url": "https://example.org/tv_s1_e1_thumbnail.png",
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "contentAttributes",
+          "value": ["sceneStill", "background", "noTitle"]
+        }
        },
        "name": "TV Episode 1 Name"
       },
@@ -224,7 +262,12 @@ The user agent will then find the next episode in this series that should have a
         "@type": "ImageObject",
         "width": 360,
         "height": 480,
-        "url": "https://example.org/tv_s1_e2_thumbnail.png"
+        "url": "https://example.org/tv_s1_e2_thumbnail.png",
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "contentAttributes",
+          "value": ["sceneStill", "background", "noTitle"]
+        }
        },
        "name": "TV Episode 2 Name"
       },
@@ -247,7 +290,12 @@ Below is an example where a user has finished watching the first season and the 
     "@type": "ImageObject",
     "width": 360,
     "height": 480,
-    "url": "https://example.org/video_thumbnail.png"
+    "url": "https://example.org/video_thumbnail.png",
+    "additionalProperty": {
+      "@type": "PropertyValue",
+      "name": "contentAttributes",
+      "value": ["iconic", "poster", "hasTitle"]
+    }
   },
   "isFamilyFriendly": "http://schema.org/True",
   "name": "Cool TV Series",
@@ -266,7 +314,12 @@ Below is an example where a user has finished watching the first season and the 
         "@type": "ImageObject",
         "width": 360,
         "height": 480,
-        "url": "https://example.org/tv_s1_e10_thumbnail.png"
+        "url": "https://example.org/tv_s1_e10_thumbnail.png",
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "contentAttributes",
+          "value": ["sceneStill", "background", "noTitle"]
+        }
        },
        "name": "TV Episode 10 Name"
       },
@@ -287,7 +340,12 @@ Below is an example where a user has finished watching the first season and the 
         "@type": "ImageObject",
         "width": 360,
         "height": 480,
-        "url": "https://example.org/tv_s2_e1_thumbnail.png"
+        "url": "https://example.org/tv_s2_e1_thumbnail.png",
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "contentAttributes",
+          "value": ["sceneStill", "background", "noTitle"]
+        }
        },
        "name": "TV Episode 10 Name"
       },
@@ -312,7 +370,12 @@ If a site wishes to recommend a TV series to a user they can use the [TVSeries](
     "@type": "ImageObject",
     "width": 360,
     "height": 480,
-    "url": "https://example.org/video_thumbnail.png"
+    "url": "https://example.org/video_thumbnail.png",
+    "additionalProperty": {
+      "@type": "PropertyValue",
+      "name": "contentAttributes",
+      "value": ["iconic", "poster", "hasTitle"]
+    }
   },
   "isFamilyFriendly": "http://schema.org/True",
   "name": "Cool TV Series",
@@ -345,7 +408,12 @@ If a site wishes to recommend some live video content to a user they can add a [
     "@type": "ImageObject",
     "width": 360,
     "height": 480,
-    "url": "https://example.org/video_thumbnail.png"
+    "url": "https://example.org/video_thumbnail.png",
+    "additionalProperty": {
+      "@type": "PropertyValue",
+      "name": "contentAttributes",
+      "value": ["iconic", "poster", "hasTitle"]
+    }
   },
   "interactionStatistic": {
     "@type": "InteractionCounter",
@@ -390,6 +458,11 @@ If a site wishes to recommend a movie to a user they can use the [Movie](https:/
     "width": 360,
     "height": 480,
     "url": "https://example.org/movie_thumbnail.png",
+    "additionalProperty": {
+      "@type": "PropertyValue",
+      "name": "contentAttributes",
+      "value": ["iconic", "poster", "hasTitle"]
+    }
   },
   "isFamilyFriendly": "http://schema.org/True",
   "name": "Dream",
@@ -471,8 +544,8 @@ If the `image` is an ImageObject the following properties **are required**:
 2. `height` - the height of the image in px
     
 3. `embedUrl` or `url` - the URL to embed the content
-    
-4. If the image is a live thumbnail video then both the `contentSize` and `encodingFormat` must be specified
+
+4. `additionalProperty` - this can contain a `contentAttributes` property which contains an array of different attributes that tell the user agent about the contents of the image
     
 If the media item is a live broadcast it **must have** a `publication` property set to BroadcastEvent with the following properties:
 
