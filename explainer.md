@@ -85,11 +85,16 @@ Media Feeds should be [valid JSON+LD documents](https://www.w3.org/TR/json-ld11/
         }
       }
     ]
+  },
+  "additionalProperty": {
+    "@type": "PropertyValue",
+    "name": "associatedOrigin",
+    "value": ["https://login.example.org"]
   }
 }
 ```
 
-The site should return a schema.org [CompleteDataFeed](https://schema.org/CompleteDataFeed). This has a [provider](https://schema.org/provider) property that uses [Organization](https://schema.org/Organization) to describe the site that publishes the feed. This can be used by the user agent to show the name and logo of the site. The [member](https://schema.org/member) field on Organization should contain a [Person](https://schema.org/Person) that contains the details about the currently logged in user. This should contain the email, name and image of the user. The user agent can show this to the user to identifier which account the recommendations are coming from. This is especially important if the media site supports multiple profiles.
+The site should return a schema.org [CompleteDataFeed](https://schema.org/CompleteDataFeed). This has a [provider](https://schema.org/provider) property that uses [Organization](https://schema.org/Organization) to describe the site that publishes the feed. This can be used by the user agent to show the name and logo of the site. The [member](https://schema.org/member) field on Organization can contain a [Person](https://schema.org/Person) that contains the details about the currently logged in user. This should contain the name and optionally the email and/or image of the user. The user agent can show this to the user to identifier which account the recommendations are coming from. This is especially important if the media site supports multiple profiles.
 
 The feed will contain a number of media items that are recommendations relevant to the logged-in user or generic if the user is not logged in. These are stored in the `dataFeedElement` property and should all have a unique `@id` which can be the URL of the content. The media items should be one of the following types:
 
@@ -102,6 +107,8 @@ The feed will contain a number of media items that are recommendations relevant 
 There are some examples in the sections below about how these media items can be used for different use cases.
 
 A site should make use of appropriate [Cache-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control) headers and return a `304 Not Modified` response if the content has not changed. The [Cache-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control) and [Expires](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires) headers can be used to suggest to the user agent about when a feed should be re-fetched. The user agent will make a decision about how often to fetch the feed based on a minimum/maximum value and based on user interaction.
+
+The `associated origin` is optional. It allows a website to provide origins that are linked to the login state of the website. The user agent will refetch the feed contents if the user visits the website that is hosting the feed or an associated origin. It will also refetch the feed contents if the cookies are deleted or expired on the feed URL or an associated origin.
 
 ### A site recommends a generic video to a user
 

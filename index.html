@@ -87,6 +87,29 @@
       mode. This is because the lifetime of the incognito mode session is not long
       enough for this feature to be useful.
     </p>
+
+    <p>
+      In order to not show a stale <a>currently logged in user</a>, the user agent
+      should invalidate the contents of a feed in the following cases:
+
+      <ul>
+        <li>
+          The user visits the website or an <a>associated origin</a>.
+        </li>
+        <li>
+          The cookies expire or are deleted on the website or an <a>associated origin</a>.
+        </li>
+      </ul>
+
+      When the feed is invalidated it should clear the contents and trigger a fetch
+      the next time the user agent fetches the feeds.
+    </p>
+
+    <p>
+      An <dfn>associated origin</dfn> is an origin that is associated with the feed
+      that is linked to the login state of the feed. This might be an origin that
+      serves a login page.
+    </p>
   </section>
 
   <section id="model">
@@ -230,6 +253,29 @@
             contain valid <a>media feed items</a> or
             <a>media feed broadcast events</a>.
           </li>
+          <li>
+            The <a data-cite="schema-org/additionalProperty#">additionalProperty</a>
+            property MAY be present. If present, it must contain a
+            <a data-cite="schema-org/PropertyValue#">PropertyValue</a> object and
+            the user agent MUST use the following steps to validate it:
+
+            <ul>
+              <li>
+                The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+                set to <a data-cite="schema-org/PropertyValue#">PropertyValue</a>.
+              </li>
+              <li>
+                The <a data-cite="schema-org/name#">name</a> property MUST contain
+                <code>associatedOrigin</code>.
+              </li>
+              <li>
+                The <a data-cite="schema-org/value#">value</a> property supports
+                <a>multiple values</a> and if present it MUST contain a maximum of
+                3 different valid <a data-cite="url#urls">URLs</a> that are the
+                <a>associated origins</a>.
+              </li>
+            </ul>
+          </li>
         </ul>
       </p>
 
@@ -252,9 +298,9 @@
             <a>media logos</a>.
           </li>
           <li>
-            The <a data-cite="schema-org/member#">member</a> property MUST
-            contain a <a data-cite="schema-org/Person#">Person</a> that is a
-            valid <a>currently logged in user</a>.
+            The <a data-cite="schema-org/member#">member</a> property is
+            optional. If present, it MUST contain a valid
+            <a>currently logged in user</a>.
           </li>
         </ul>
       </p>
@@ -273,12 +319,12 @@
             valid non-empty string.
           </li>
           <li>
-            The <a data-cite="schema-org/image#">image</a> property MUST contain
-            a valid <a>media image</a>.
+            The <a data-cite="schema-org/image#">image</a> property is optional.
+            If present, it MUST contain a valid <a>media image</a>.
           </li>
           <li>
-            The <a data-cite="schema-org/email#">email</a> property SHOULD be
-            present. If present, it MUST contain a valid
+            The <a data-cite="schema-org/email#">email</a> property is optional.
+            If present, it MUST contain a valid
             <a data-cite="EMAIL#section-3.4">email address</a>.
           </li>
         </ul>
@@ -332,6 +378,11 @@
                     }
                   }
                 ]
+              },
+              "additionalProperty": {
+                "@type": "PropertyValue",
+                "name": "associatedOrigin",
+                "value": ["https://login.example.org"]
               }
             }
           </code>
