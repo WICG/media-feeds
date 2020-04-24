@@ -15,7 +15,11 @@ have the following logos:
 has a transparent background. It should have the `forDarkBackground`, `hasTitle` and `transparentBackground`
 [content attributes](https://wicg.github.io/media-feeds/#dfn-media-logo).
 
-2. A logo that is landscape, suitable for dark backgrounds, has the title and logo centered, and has
+2. A logo that is landscape, suitable for light backgrounds, has the title and logo for the website and
+has a transparent background. It should have the `forLightBackground`, `hasTitle` and `transparentBackground`
+[content attributes](https://wicg.github.io/media-feeds/#dfn-media-logo).
+
+3. A logo that is landscape, suitable for dark backgrounds, has the title and logo centered, and has
 an opaque background. It should have the `forDarkBackground`, `hasTitle` and `centered`
 [content attributes](https://wicg.github.io/media-feeds/#dfn-media-logo).
 
