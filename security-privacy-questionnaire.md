@@ -57,7 +57,7 @@ We will not discover or fetch Media Feeds in these modes.
 
 15. Does this specification have a "Security Considerations" and "Privacy Considerations" section?
 
-No.
+Yes.
 
 16. Does this specification allow downgrading default security characteristics?
 
