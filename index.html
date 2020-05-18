@@ -97,7 +97,12 @@
           The user visits the website or an <a>associated origin</a>.
         </li>
         <li>
-          The cookies expire or are deleted on the website or an <a>associated origin</a>.
+          If there is a <a>cookie name filter</a> that matches the name of the cookie
+          that changed.
+        </li>
+        <li>
+          If there is no <a>cookie name filter</a>. Then when any cookie expires or is
+          deleted on the website or an <a>associated origin</a>.
         </li>
       </ul>
 
@@ -111,6 +116,14 @@
       serves a login page. An <a>associated origin</a> MUST have the
       <a data-cite="rfc2818#section-2.4">https</a>
       <a data-cite="URL#concept-url-scheme">scheme</a>.
+    </p>
+
+    <p>
+      A <dfn>cookie name filter</dfn> is the name of a cookie that will be used by
+      the user agent to invalidate the contents of the feed if the cookie with a 
+      matching name is changed. It is intended for the website to provide the name
+      of the login cookie so the user agent can invalidate the feed if the login
+      session changes.
     </p>
 
     <p>
@@ -262,24 +275,52 @@
           </li>
           <li>
             The <a data-cite="schema-org/additionalProperty#">additionalProperty</a>
-            property MAY be present. If present, it must contain a
-            <a data-cite="schema-org/PropertyValue#">PropertyValue</a> object and
-            the user agent MUST use the following steps to validate it:
+            property supports <a>multiple values</a> and if present it MUST
+            contain valid <a>media feed properties</a>.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        The user agent MUST validate the <dfn>media feed property</dfn> using the
+        following steps:
+
+        <ul>
+          <li>
+            The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
+            set to <a data-cite="schema-org/PropertyValue#">PropertyValue</a>.
+          </li>
+          <li>
+            The <a data-cite="schema-org/name#">name</a> property MUST be present
+            and contain a valid non-empty string.
+          </li>
+          <li>
+            The <a data-cite="schema-org/value#">value</a> property MUST be present
+          </li>
+          <li>
+            If the name <a data-cite="schema-org/name#">name</a> property contains
+            <code>associatedOrigin</code> then the user agent MUST run the following
+            steps:
 
             <ul>
               <li>
-                The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-                set to <a data-cite="schema-org/PropertyValue#">PropertyValue</a>.
-              </li>
-              <li>
-                The <a data-cite="schema-org/name#">name</a> property MUST contain
-                <code>associatedOrigin</code>.
-              </li>
-              <li>
                 The <a data-cite="schema-org/value#">value</a> property supports
-                <a>multiple values</a> and if present it MUST contain a maximum of
-                5 different valid <a data-cite="url#urls">URLs</a> that are the
-                <a>associated origins</a>.
+                <a>multiple values</a> and MUST contain a maximum of 5 different
+                valid <a data-cite="url#urls">URLs</a> that are the
+                <a>associated origins</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            If the name <a data-cite="schema-org/name#">name</a> property contains
+            <code>cookieNameFilter</code> then the user agent MUST run the following
+            steps:
+
+            <ul>
+              <li>
+                The <a data-cite="schema-org/value#">value</a> property MUST contain
+                a valid non-empty string that will be set as the
+                <a>cookie name filter</a>.
               </li>
             </ul>
           </li>
@@ -386,11 +427,15 @@
                   }
                 ]
               },
-              "additionalProperty": {
+              "additionalProperty": [{
                 "@type": "PropertyValue",
                 "name": "associatedOrigin",
                 "value": ["https://login.example.org"]
-              }
+              }, {
+                "@type": "PropertyValue",
+                "name": "cookieNameFilter",
+                "value": "LOGIN"
+              }]
             }
           </code>
         </pre>
