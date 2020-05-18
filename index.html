@@ -97,11 +97,11 @@
           The user visits the website or an <a>associated origin</a>.
         </li>
         <li>
-          If there is a <a>cookie name filter</a> that matches the name of the cookie
-          that changed.
+          If there is a <a>cookie name filter</a> that matches the name of a cookie on the
+          website or associated origin and that cookie's value changed.
         </li>
         <li>
-          If there is no <a>cookie name filter</a>. Then when any cookie expires or is
+          If there is no <a>cookie name filter</a>, then when any cookie expires or is
           deleted on the website or an <a>associated origin</a>.
         </li>
       </ul>
@@ -119,11 +119,10 @@
     </p>
 
     <p>
-      A <dfn>cookie name filter</dfn> is the name of a cookie that will be used by
-      the user agent to invalidate the contents of the feed if the cookie with a 
-      matching name is changed. It is intended for the website to provide the name
-      of the login cookie so the user agent can invalidate the feed if the login
-      session changes.
+      A <dfn>cookie name filter</dfn> is the name of a cookie that signals the user
+      agent to invalidate the contents of the feed. It is intended for the website
+      to provide the name of the login cookie so the user agent can invalidate the
+      feed if the login session changes.
     </p>
 
     <p>
