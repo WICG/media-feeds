@@ -114,6 +114,18 @@ A site should make use of appropriate [Cache-Control](https://developer.mozilla.
 
 The `associated origin` is optional. It allows a website to provide origins that are linked to the login state of the website. The user agent will refetch the feed contents if the user visits the website that is hosting the feed or an associated origin. It will also refetch the feed contents if the cookies are deleted or expired on the feed URL or an associated origin.
 
+Each `associated origin` should serve the Media Feeds Well Known file to ensure that a Media Feed is allowed to add an origin as an associated origin. In the example above, the `https://login.example.org` should host a file at `https://login.example.org/.well-known/media-feeds` containing the following:
+
+```js
+{
+  "allowedAssociations": [
+      "https://www.example.org"
+  ]
+}
+```
+
+This allows a Media Feed hosted on `https://www.example.org` to add `https://login.example.org` as an associated origin.
+
 ### A site recommends a generic video to a user
 
 If a site wishes to recommend a generic video to a user they can use the [VideoObject](https://schema.org/VideoObject) media item type. The URL to watch the video is stored in the [potentialAction](https://schema.org/potentialAction) property.
