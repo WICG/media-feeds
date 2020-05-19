@@ -86,11 +86,15 @@ Media Feeds should be [valid JSON+LD documents](https://www.w3.org/TR/json-ld11/
       }
     ]
   },
-  "additionalProperty": {
+  "additionalProperty": [{
     "@type": "PropertyValue",
     "name": "associatedOrigin",
     "value": ["https://login.example.org"]
-  }
+  }, {
+    "@type": "PropertyValue",
+    "name": "cookieNameFilter",
+    "value": "LOGIN"
+  }]
 }
 ```
 
