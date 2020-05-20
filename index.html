@@ -211,7 +211,7 @@
           to <a data-cite="json-ld11#iana-considerations">application/ld+json</a>
         </li>
         <li>
-          <a data-cite="FETCH#concept-request-redirect-mode">request mode</a> set to
+          <a data-cite="FETCH#concept-request-redirect-mode">redirect mode</a> set to
           <code>error</code>
         </li>
       </ul>
@@ -227,6 +227,128 @@
       If the user agent recieves a
       <a data-cite="rfc7231#section-6.5.9">410 Gone</a> status code from the
       site then it should remove the feed from the <a>media feed store</a>.
+    </p>
+
+    <p>
+      After fetching and the user agent has a valid <a>media feed document</a>,
+      the user agent MUST run the following steps:
+
+      <ul>
+        <li>
+          For each <a>associated origin</a>:
+
+          <ul>
+            <li>
+              Perform a <a data-cite="FETCH#fetching">fetch</a> for the
+              <a><code>media-feeds</code> well-known URI</a> with the following
+              <a data-cite="FETCH#concept-request">request</a>
+              parameters:
+
+              <ul>
+                <li>
+                  <a data-cite="FETCH#concept-header-list">header list</a>
+                  containing the <a data-cite="rfc7231#header.accept">accept header</a>
+                  set to <code>application/json</code>
+                </li>
+                <li>
+                  <a data-cite="FETCH#concept-request-redirect-mode">redirect mode</a>
+                  set to <code>error</code>
+                </li>
+                <li>
+                  <a data-cite="FETCH#concept-request-credentials-mode">credentials mode</a>
+                  set to <code>omit</code>
+                </li>
+              </ul>
+            </li>
+            <li>
+              If the request failed, then return <var>false</var>
+            </li>
+            <li>
+              Parse the response body using a <a data-cite="JSON#">JSON</a> parser. If the
+              parsing fails, then return <var>false</var>
+            </li>
+            <li>
+              Get the <code>allowedAssociations</code> member. If it is not present, then
+              return <var>false</var>
+            </li>
+            <li>
+              Create an <var>allowed associations</var> set of origins
+            </li>
+            <li>
+              If <code>allowedAssociations</code> is a string, then parse it as a
+              <a data-cite="url#urls">URL</a>. If the parsing is successful, then add its
+              origin to <var>allowed associations</var>. If it is not successful, then
+              return <var>false</var> 
+            </li>
+            <li>
+              If <code>allowedAssociations</code> is an array, then for each member run
+              the following steps:
+
+              <ul>
+                <li>
+                  If the member is not a string, then skip it
+                </li>
+                <li>
+                  Parse the member as a <a data-cite="url#urls">URL</a>. If the parsing
+                  is successful, then add its origin to <var>allowed associations</var>
+                </li>
+              </ul>
+            </li>
+            <li>
+              Return whether the origin for the <a>media feed URL</a> is in <var>allowed associations</var>
+            </li>
+          </ul>
+        </li>
+        <li>
+          If the above steps returned <var>false</var> then remove the origin from
+          <a>associated origins</a>
+        </li>
+      </ul>
+
+      <div class="example" id="example-1-multiple-values">
+        <div class="marker">
+            <a class="self-link" href="#example-1-multiple-values">
+              Example<bdi> 1</bdi>
+            </a>
+            <span class="example-title">: Well Known File</span>
+        </div>
+
+        <p>
+          The <a><code>media-feeds</code> well-known URI</a> is used to ensure that
+          origins that are declared as <a>associated origins</a> are allowed to do
+          so. The feed example below is hosted on <code>https://www.example.org</code>
+          and declares <code>https://login.example.org</code> as an
+          <a>associated origin</a>.
+        </p>
+
+        <pre>
+          <code class="json">
+            {
+              "additionalProperty": {
+                "@type": "PropertyValue",
+                "name": "associatedOrigin",
+                "value": ["https://login.example.org"]
+              }
+            }
+          </code>
+        </pre>
+
+        <p>
+          The <code>https://login.example.org</code> adds a file at
+          <code>https://login.example.org/.well-known/media-feeds</code> that contains
+          the origin of the above feed.
+        </p>
+
+        <pre>
+          <code class="json">
+            {
+              "allowedAssociations": [
+                 "https://www.example.org"
+              ]
+            }
+          </code>
+        </pre>
+      </div>
     </p>
 
     <section id="media-feed-document">
@@ -377,10 +499,10 @@
         </ul>
       </p>
 
-      <div class="example" id="example-1-sample-feed">
+      <div class="example" id="example-2-sample-feed">
         <div class="marker">
-            <a class="self-link" href="#example-1-sample-feed">
-              Example<bdi> 1</bdi>
+            <a class="self-link" href="#example-2-sample-feed">
+              Example<bdi> 2</bdi>
             </a>
             <span class="example-title">: Sample Media Feed</span>
         </div>
@@ -638,10 +760,10 @@
         </ul>
       </p>
 
-      <div class="example" id="example-2-broadcast-event">
+      <div class="example" id="example-3-broadcast-event">
         <div class="marker">
-            <a class="self-link" href="#example-2-broadcast-event">
-              Example<bdi> 2</bdi>
+            <a class="self-link" href="#example-3-broadcast-event">
+              Example<bdi> 3</bdi>
             </a>
             <span class="example-title">: Broadcast Event</span>
         </div>
@@ -1274,10 +1396,10 @@
         these MAY be ignored by the user agent.
       </p>
 
-      <div class="example" id="example-3-multiple-values">
+      <div class="example" id="example-4-multiple-values">
         <div class="marker">
-            <a class="self-link" href="#example-3-multiple-values">
-              Example<bdi> 3</bdi>
+            <a class="self-link" href="#example-4-multiple-values">
+              Example<bdi> 4</bdi>
             </a>
             <span class="example-title">: Multiple Values</span>
         </div>
@@ -1457,6 +1579,39 @@
         </li>
       </ul>
     </p>
+  </section>
+
+  <section>
+    <h2 id="iana">IANA Considerations</h2>
+
+    <h3 id="iana-well-known">Well-known <code>media-feeds</code> URI</h3>
+
+    <p>
+      This section provides the provisional registration of the
+      <dfn><code>media-feeds</code> well-known URI</dfn> in the Well-Known URIs
+      registry in accordance with
+      <a data-cite="RFC8615#">Well-Known Uniform Resource Identifiers (URIs)</a>.
+    </p>
+
+    <p class="note">
+      Although the rest of this specification, and indeed the rest of the web platform,
+      <a href="https://url.spec.whatwg.org/#url-apis-elsewhere">uses the term "URL"</a>,
+      this section in particular intersects with a community that uses the term "URI".
+    </p>
+
+    <dl>
+      <dt><strong>URI suffix</strong></dt>
+      <dd><code>media-feeds</code></dd>
+
+      <dt><strong>Change controller</strong></dt>
+      <dd><code>WICG</code></dd>
+
+      <dt><strong>Specification document(s)</strong></dt>
+      <dd><a href="https://wicg.github.io/media-feeds/">https://wicg.github.io/media-feeds/</a></dd>
+
+      <dt><strong>Related information</strong></dt>
+      <dd>N/A</dd>
+    </dl>
   </section>
 </body>
 
