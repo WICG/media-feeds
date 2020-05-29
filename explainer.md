@@ -505,11 +505,9 @@ It is **required** that all media items should have the following properties:
     
 5. `duration` - the duration of the content (only required for VideoObject and Movie, also optional for videos that are live)
     
-6. `isFamilyFriendly` - if the content is family friendly
-    
-7. `image` - artwork to be displayed by the user agent. These should be [ImageObject](https://schema.org/ImageObject). This allows the user agent to pick the right artwork based on the size
+6. `image` - artwork to be displayed by the user agent. These should be [ImageObject](https://schema.org/ImageObject). This allows the user agent to pick the right artwork based on the size
 
-8. `potentialAction` - the action to watch the media. If the object is a [TVSeries](https://schema.org/TVSeries) and has an embedded [TVEpisode](https://schema.org/TVEpisode) then the `potentialAction` is only required on the [TVEpisode](https://schema.org/TVEpisode). The `potentialAction` is also not required on items that are embedded in a broadcast event.
+7. `potentialAction` - the action to watch the media. If the object is a [TVSeries](https://schema.org/TVSeries) and has an embedded [TVEpisode](https://schema.org/TVEpisode) then the `potentialAction` is only required on the [TVEpisode](https://schema.org/TVEpisode). The `potentialAction` is also not required on items that are embedded in a broadcast event.
     
 It is *suggested* that the media items have the following properties:
 
@@ -520,6 +518,8 @@ It is *suggested* that the media items have the following properties:
 3. `genre` - the genre of the content
 
 4. `identifier` - the identifiers of the content in third party systems
+
+5. `isFamilyFriendly` - if the content is family friendly
 
 WatchActions should be present in the `potentialAction` property and have the following requirements:
 
