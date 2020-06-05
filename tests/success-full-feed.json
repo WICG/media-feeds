@@ -426,10 +426,5 @@
           "value": ["forLightBackground", "hasTitle", "centered"]
         }
       }]
-    },
-    "additionalProperty": {
-      "@type": "PropertyValue",
-      "name": "associatedOrigin",
-      "value": ["https://www.github.com"]
     }
 }

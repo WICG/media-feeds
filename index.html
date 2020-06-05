@@ -94,28 +94,20 @@
 
       <ul>
         <li>
-          The user visits the website or an <a>associated origin</a>.
+          The user visits the website.
         </li>
         <li>
           If there is a <a>cookie name filter</a> that matches the name of a cookie on the
-          website or associated origin and that cookie's value changed.
+          website and that cookie's value changed.
         </li>
         <li>
           If there is no <a>cookie name filter</a>, then when any cookie expires or is
-          deleted on the website or an <a>associated origin</a>.
+          deleted on the website.
         </li>
       </ul>
 
       When the feed is invalidated it should clear the contents and trigger a fetch
       the next time the user agent fetches the feeds.
-    </p>
-
-    <p>
-      An <dfn>associated origin</dfn> is an origin that is associated with the feed
-      that is linked to the login state of the feed. This might be an origin that
-      serves a login page. An <a>associated origin</a> MUST have the
-      <a data-cite="rfc2818#section-2.4">https</a>
-      <a data-cite="URL#concept-url-scheme">scheme</a>.
     </p>
 
     <p>
@@ -231,128 +223,6 @@
       site then it should remove the feed from the <a>media feed store</a>.
     </p>
 
-    <p>
-      After fetching and the user agent has a valid <a>media feed document</a>,
-      the user agent MUST run the following steps:
-
-      <ul>
-        <li>
-          For each <a>associated origin</a>:
-
-          <ul>
-            <li>
-              Perform a <a data-cite="FETCH#fetching">fetch</a> for the
-              <a><code>media-feeds</code> well-known URI</a> with the following
-              <a data-cite="FETCH#concept-request">request</a>
-              parameters:
-
-              <ul>
-                <li>
-                  <a data-cite="FETCH#concept-header-list">header list</a>
-                  containing the <a data-cite="rfc7231#header.accept">accept header</a>
-                  set to <code>application/json</code>
-                </li>
-                <li>
-                  <a data-cite="FETCH#concept-request-redirect-mode">redirect mode</a>
-                  set to <code>error</code>
-                </li>
-                <li>
-                  <a data-cite="FETCH#concept-request-credentials-mode">credentials mode</a>
-                  set to <code>omit</code>
-                </li>
-              </ul>
-            </li>
-            <li>
-              If the request failed, then return <var>false</var>
-            </li>
-            <li>
-              Parse the response body using a <a data-cite="JSON#">JSON</a> parser. If the
-              parsing fails, then return <var>false</var>
-            </li>
-            <li>
-              Get the <code>allowedAssociations</code> member. If it is not present, then
-              return <var>false</var>
-            </li>
-            <li>
-              Create an <var>allowed associations</var> set of origins
-            </li>
-            <li>
-              If <code>allowedAssociations</code> is a string, then parse it as a
-              <a data-cite="url#urls">URL</a>. If the parsing is successful, then add its
-              origin to <var>allowed associations</var>. If it is not successful, then
-              return <var>false</var> 
-            </li>
-            <li>
-              If <code>allowedAssociations</code> is an array, then for each member run
-              the following steps:
-
-              <ul>
-                <li>
-                  If the member is not a string, then skip it
-                </li>
-                <li>
-                  Parse the member as a <a data-cite="url#urls">URL</a>. If the parsing
-                  is successful, then add its origin to <var>allowed associations</var>
-                </li>
-              </ul>
-            </li>
-            <li>
-              Return whether the origin for the <a>media feed URL</a> is in <var>allowed associations</var>
-            </li>
-          </ul>
-        </li>
-        <li>
-          If the above steps returned <var>false</var> then remove the origin from
-          <a>associated origins</a>
-        </li>
-      </ul>
-
-      <div class="example" id="example-1-multiple-values">
-        <div class="marker">
-            <a class="self-link" href="#example-1-multiple-values">
-              Example<bdi> 1</bdi>
-            </a>
-            <span class="example-title">: Well Known File</span>
-        </div>
-
-        <p>
-          The <a><code>media-feeds</code> well-known URI</a> is used to ensure that
-          origins that are declared as <a>associated origins</a> are allowed to do
-          so. The feed example below is hosted on <code>https://www.example.org</code>
-          and declares <code>https://login.example.org</code> as an
-          <a>associated origin</a>.
-        </p>
-
-        <pre>
-          <code class="json">
-            {
-              "additionalProperty": {
-                "@type": "PropertyValue",
-                "name": "associatedOrigin",
-                "value": ["https://login.example.org"]
-              }
-            }
-          </code>
-        </pre>
-
-        <p>
-          The <code>https://login.example.org</code> adds a file at
-          <code>https://login.example.org/.well-known/media-feeds</code> that contains
-          the origin of the above feed.
-        </p>
-
-        <pre>
-          <code class="json">
-            {
-              "allowedAssociations": [
-                 "https://www.example.org"
-              ]
-            }
-          </code>
-        </pre>
-      </div>
-    </p>
-
     <section id="media-feed-document">
       <h3>Media Feed Document</h2>
 
@@ -422,20 +292,6 @@
           </li>
           <li>
             If the name <a data-cite="schema-org/name#">name</a> property contains
-            <code>associatedOrigin</code> then the user agent MUST run the following
-            steps:
-
-            <ul>
-              <li>
-                The <a data-cite="schema-org/value#">value</a> property supports
-                <a>multiple values</a> and MUST contain a maximum of 5 different
-                valid <a data-cite="url#urls">URLs</a> that are the
-                <a>associated origins</a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            If the name <a data-cite="schema-org/name#">name</a> property contains
             <code>cookieNameFilter</code> then the user agent MUST run the following
             steps:
 
@@ -501,10 +357,10 @@
         </ul>
       </p>
 
-      <div class="example" id="example-2-sample-feed">
+      <div class="example" id="example-1-sample-feed">
         <div class="marker">
-            <a class="self-link" href="#example-2-sample-feed">
-              Example<bdi> 2</bdi>
+            <a class="self-link" href="#example-1-sample-feed">
+              Example<bdi> 1</bdi>
             </a>
             <span class="example-title">: Sample Media Feed</span>
         </div>
@@ -550,15 +406,11 @@
                   }
                 ]
               },
-              "additionalProperty": [{
-                "@type": "PropertyValue",
-                "name": "associatedOrigin",
-                "value": ["https://login.example.org"]
-              }, {
+              "additionalProperty": {
                 "@type": "PropertyValue",
                 "name": "cookieNameFilter",
                 "value": "LOGIN"
-              }]
+              }
             }
           </code>
         </pre>
@@ -763,10 +615,10 @@
         </ul>
       </p>
 
-      <div class="example" id="example-3-broadcast-event">
+      <div class="example" id="example-2-broadcast-event">
         <div class="marker">
-            <a class="self-link" href="#example-3-broadcast-event">
-              Example<bdi> 3</bdi>
+            <a class="self-link" href="#example-2-broadcast-event">
+              Example<bdi> 2</bdi>
             </a>
             <span class="example-title">: Broadcast Event</span>
         </div>
@@ -1399,10 +1251,10 @@
         these MAY be ignored by the user agent.
       </p>
 
-      <div class="example" id="example-4-multiple-values">
+      <div class="example" id="example-3-multiple-values">
         <div class="marker">
-            <a class="self-link" href="#example-4-multiple-values">
-              Example<bdi> 4</bdi>
+            <a class="self-link" href="#example-3-multiple-values">
+              Example<bdi> 3</bdi>
             </a>
             <span class="example-title">: Multiple Values</span>
         </div>
