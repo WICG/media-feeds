@@ -86,15 +86,11 @@ Media Feeds should be [valid JSON+LD documents](https://www.w3.org/TR/json-ld11/
       }
     ]
   },
-  "additionalProperty": [{
-    "@type": "PropertyValue",
-    "name": "associatedOrigin",
-    "value": ["https://login.example.org"]
-  }, {
+  "additionalProperty": {
     "@type": "PropertyValue",
     "name": "cookieNameFilter",
     "value": "LOGIN"
-  }]
+  }
 }
 ```
 
@@ -111,20 +107,6 @@ The feed will contain a number of media items that are recommendations relevant 
 There are some examples in the sections below about how these media items can be used for different use cases.
 
 A site should make use of appropriate [Cache-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control) headers and return a `304 Not Modified` response if the content has not changed. The [Cache-Control](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control) and [Expires](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expires) headers can be used to suggest to the user agent about when a feed should be re-fetched. The user agent will make a decision about how often to fetch the feed based on a minimum/maximum value and based on user interaction.
-
-The `associated origin` is optional. It allows a website to provide origins that are linked to the login state of the website. The user agent will refetch the feed contents if the user visits the website that is hosting the feed or an associated origin. It will also refetch the feed contents if the cookies are deleted or expired on the feed URL or an associated origin.
-
-Each `associated origin` should serve the Media Feeds Well Known file to ensure that a Media Feed is allowed to add an origin as an associated origin. In the example above, the `https://login.example.org` should host a file at `https://login.example.org/.well-known/media-feeds` containing the following:
-
-```js
-{
-  "allowedAssociations": [
-      "https://www.example.org"
-  ]
-}
-```
-
-This allows a Media Feed hosted on `https://www.example.org` to add `https://login.example.org` as an associated origin.
 
 ### A site recommends a generic video to a user
 
