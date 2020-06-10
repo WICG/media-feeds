@@ -32,11 +32,11 @@ Media Feeds provides a way for user agents to discover such feeds and provides a
 
 ## Design
 
-The website should advertise a media feed to the user agent by adding a `link` element to the head of the document. The `rel` attribute should be set to `feed` and the type should be set to `application/ld+json`. The `href` attribute should be on the same origin as the document URL. A user agent will automatically discover the media feed and store it to be fetched later.
+The website should advertise a media feed to the user agent by adding a `link` element to the head of the document. The `rel` attribute should be set to `media-feed`. The `href` attribute should be on the same origin as the document URL. A user agent will automatically discover the media feed and store it to be fetched later.
 
 ```html
 <head>
-  <link rel="feed" type="application/ld+json" href="https://www.example.com/media-feed">
+  <link rel="media-feed" href="https://www.example.com/media-feed">
 </head>
 ```
 
