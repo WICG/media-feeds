@@ -40,7 +40,7 @@ The website should advertise a media feed to the user agent by adding a `link` e
 </head>
 ```
 
-Media Feeds use a subset of [JSON+LD](https://www.w3.org/TR/json-ld11/#dfn-json-ld-document) and contain data using the existing [schema.org](https://schema.org) standard. The user agent will fetch the media feed using a `GET` request with the appropriate cookies, caching headers and the accept header will be set to `application/ld+json`.
+Media Feeds use a subset of [JSON+LD](https://www.w3.org/TR/json-ld11/#dfn-json-ld-document) and contain data using the existing [schema.org](https://schema.org) standard. The user agent will fetch the media feed using a `GET` request with the appropriate cookies, caching headers and the accept header will be set to `application/ld+json`. This fetch does not use service workers.
 
 ```js
 {
