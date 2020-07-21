@@ -41,7 +41,7 @@ No
 
 11. Does this specification allow an origin some measure of control over a user agent’s native UI?
 
-Yes, the feature allows a site to show content from these feeds in the user agent's UI. However, a user will have the option of switching them on/off.
+Yes, the feature allows a site to show content from these feeds in the user agent's UI. However, a user will have the option of switching them on/off at an individual feed level. The user agent will collect a feature level consent that tells the user that periodic background fetch is occuring. For feeds discovered after the feature level consent is collected, we will show a popup notification when the user opens the feature which will let them know that this is occuring and provide a mechanism to disable it.
 
 12. What temporary identifiers might this this specification create or expose to the web?
 
