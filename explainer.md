@@ -29,6 +29,9 @@ Media Feeds provides a way for user agents to discover such feeds and provides a
     
 -   [MediaRSS/RSS](http://www.rssboard.org/media-rss#media-content) is an alternative, however it does not give us enough detail about whether the content is a TV show, movie as well as the structure around a TV series and seasons.
 
+## Use Case
+
+A user opens their browser and sees an aggregated list of media from across all their media websites. This includes continue watching recommendations where they can click and resume playing as well as personalized recommmendations for new content. When they visit new media websites they are shown a notification that this website can show media recommendations in the browser and has an option to dismiss.
 
 ## Design
 
