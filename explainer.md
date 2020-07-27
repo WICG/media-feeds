@@ -586,3 +586,45 @@ In schema.org any object can have a number of [identifier](https://schema.org/id
 ```
   
 A list of known identifiers is [available here](third-party-identifiers.md).
+
+### Alternatives Considered
+
+## JSON Feeds
+
+Pros:
+
+  - JSON based (easier to use and browsers have native support)
+  
+  - Extendible
+ 
+Cons: 
+
+  - Media providers are not familiar with JSON feeds (they are with schema.org)
+  
+  - The image URL is fixed and not extensible and we need to support additional data on an image such as width, height and content attributes
+
+## MediaRSS
+
+Pros:
+
+  - XML is supported by browsers
+ 
+Cons: 
+
+  - Media providers are not familiar with JSON feeds (they are with schema.org)
+  
+  - Only supports generic media types with limited metadata and does not provide us with the level of detail required, such as continue watching information or detailed images
+  
+  - Browsers do not have native support for MediaRSS
+
+## Atom
+
+Pros:
+
+  - Relatively common
+ 
+Cons: 
+
+  - Nobody uses RDFa in Atom which is going to make it harder for developers
+  
+  - Browsers do not have native support for Atom
