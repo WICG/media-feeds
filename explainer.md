@@ -32,6 +32,16 @@ Media Feeds provides a way for user agents to discover such feeds and provides a
 -   Media Feeds is intended to provide data out-of-band while the page is closed. Providing metadata about the currently playing item or while the tab is open is not a goal for Media Feeds.
 
 
+## User Journey
+
+1. User navigates to video site in order to see last episode of season #1.
+
+2. Metadata loaded via link tag includes an entry for first episode of season 2.
+
+3. User closes tab.
+
+4. The next day, the browser surfaces a suggestion on the new tab page to watch the first episode of season 2. Currently, sites that want to recommend next videos do so with their own notifications; this way the user agent can automatically do so across sites and with higher quality and control by the user.
+
 ## Design
 
 The website should advertise a media feed to the user agent by adding a `link` element to the head of the document. The `rel` attribute should be set to `media-feed`. The `href` attribute should be on the same origin as the document URL. A user agent will automatically discover the media feed and store it to be fetched later.
