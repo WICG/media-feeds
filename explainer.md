@@ -613,7 +613,7 @@ Cons:
   
   - Only supports generic media types with limited metadata and does not provide us with the level of detail required, such as continue watching information or detailed images
   
-  - Browsers do not have native support for RSS
+  - Browsers do not have native support for MediaRSS
 
 ## Atom
 
