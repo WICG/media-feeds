@@ -29,6 +29,8 @@ Media Feeds provides a way for user agents to discover such feeds and provides a
     
 -   [MediaRSS/RSS](http://www.rssboard.org/media-rss#media-content) is an alternative, however it does not give us enough detail about whether the content is a TV show, movie as well as the structure around a TV series and seasons.
 
+-   Media Feeds is intended to provide data out-of-band while the page is closed. Providing metadata about the currently playing item or while the tab is open is not a goal for Media Feeds.
+
 
 ## Design
 
