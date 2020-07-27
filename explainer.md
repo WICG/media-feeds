@@ -613,9 +613,9 @@ Cons:
   
   - Only supports generic media types with limited metadata and does not provide us with the level of detail required, such as continue watching information or detailed images
   
-  - Browsers do not have native support for Atom/RSS
+  - Browsers do not have native support for RSS
 
-## Atom/RSS
+## Atom
 
 Pros:
 
@@ -623,6 +623,6 @@ Pros:
  
 Cons: 
 
-  - Nobody uses RDFa in Atom/RSS which is going to make it harder for developers
+  - Nobody uses RDFa in Atom which is going to make it harder for developers
   
-  - Browsers do not have native support for Atom/RSS
+  - Browsers do not have native support for Atom
