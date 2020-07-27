@@ -30,6 +30,16 @@ Media Feeds provides a way for user agents to discover such feeds and provides a
 -   [MediaRSS/RSS](http://www.rssboard.org/media-rss#media-content) is an alternative, however it does not give us enough detail about whether the content is a TV show, movie as well as the structure around a TV series and seasons.
 
 
+## User Journey
+
+1. User navigates to video site in order to see last episode of season #1.
+
+2. Metadata loaded via link tag includes an entry for first episode of season 2.
+
+3. User closes tab.
+
+4. The next day, the browser surfaces a suggestion on the NTP to watch the first episode of season 2. Currently, sites that want to recommend next videos do so with their own notifications; this way the UA can automatically do so across sites and with higher quality and control by the user.
+
 ## Design
 
 The website should advertise a media feed to the user agent by adding a `link` element to the head of the document. The `rel` attribute should be set to `media-feed`. The `href` attribute should be on the same origin as the document URL. A user agent will automatically discover the media feed and store it to be fetched later.
