@@ -38,7 +38,7 @@ Media Feeds provides a way for user agents to discover such feeds and provides a
 
 3. User closes tab.
 
-4. The next day, the browser surfaces a suggestion on the NTP to watch the first episode of season 2. Currently, sites that want to recommend next videos do so with their own notifications; this way the UA can automatically do so across sites and with higher quality and control by the user.
+4. The next day, the browser surfaces a suggestion on the new tab page to watch the first episode of season 2. Currently, sites that want to recommend next videos do so with their own notifications; this way the user agent can automatically do so across sites and with higher quality and control by the user.
 
 ## Design
 
