@@ -211,7 +211,7 @@
         <li>
           <a data-cite="FETCH#concept-header-list">header list</a>
           containing the <a data-cite="rfc7231#header.accept">accept header</a> set
-          to <a data-cite="json-ld11#iana-considerations">application/ld+json</a>
+          to <a data-cite="JSON#">application/json</a>
         </li>
         <li>
           <a data-cite="FETCH#concept-request-redirect-mode">redirect mode</a> set to
@@ -222,10 +222,7 @@
 
     <p>
       The site will return the <dfn>media feed document</dfn> which MUST be
-      valid <a data-cite="JSON#">JSON</a>. The feed uses a restricted subset of
-      <a data-cite="json-ld11#">JSON+LD</a> as specified in this spec. This
-      results in the feed being compatible with <a data-cite="json-ld11#">JSON+LD</a>
-      but not the other way around.
+      valid <a data-cite="JSON#">JSON</a>.
     </p>
 
     <p>
@@ -258,12 +255,10 @@
 
         <ul>
           <li>
-            The <a data-cite="json-ld11#the-context">context</a> MUST be set to
-            <code>https://schema.org</code>.
+            The <code>@context</code> MUST be set to <code>https://schema.org</code>.
           </li>
           <li>
-            The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-            set to
+            The <a>type</a> MUST be set to
             <a data-cite="schema-org/CompleteDataFeed#">CompleteDataFeed</a>.
           </li>
           <li>
@@ -291,8 +286,8 @@
 
         <ul>
           <li>
-            The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-            set to <a data-cite="schema-org/PropertyValue#">PropertyValue</a>.
+            The <a>type</a> MUST be set to
+            <a data-cite="schema-org/PropertyValue#">PropertyValue</a>.
           </li>
           <li>
             The <a data-cite="schema-org/name#">name</a> property MUST be present
@@ -323,8 +318,8 @@
 
         <ul>
           <li>
-            The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-            set to <a data-cite="schema-org/Organization#">Organization</a>.
+            The <a>type</a> MUST be set to
+            <a data-cite="schema-org/Organization#">Organization</a>.
           </li>
           <li>
             The <a data-cite="schema-org/name#">name</a> property MUST contain a
@@ -349,8 +344,8 @@
 
         <ul>
           <li>
-            The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-            set to <a data-cite="schema-org/Person#">Person</a>.
+            The <a>type</a> MUST be set to
+            <a data-cite="schema-org/Person#">Person</a>.
           </li>
           <li>
             The <a data-cite="schema-org/name#">name</a> property MUST contain a
@@ -468,12 +463,11 @@
 
         <ul>
           <li>
-            The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-            set to a valid <a>media item type</a>.
+            The <a>type</a> MUST be set to a valid <a>media item type</a>.
           </li>
           <li>
-            The <a data-cite="json-ld11#node-identifiers">@id</a> property MUST
-            be set and contain a valid <a>media item ID</a>.
+            The <code>@id</code> property MUST be set and contain a
+            valid <a>media item ID</a>.
           </li>
           <li>
             The <a data-cite="schema-org/name#">name</a> property MUST contain
@@ -593,12 +587,12 @@
           using the following steps:
 
           <li>
-            The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-            set to <a data-cite="schema-org/BroadcastEvent#">BroadcastEvent</a>.
+            The <a>type</a> MUST be set to
+            <a data-cite="schema-org/BroadcastEvent#">BroadcastEvent</a>.
           </li>
           <li>
-            The <a data-cite="json-ld11#node-identifiers">@id</a> property MUST
-            be set and contain a valid <a>media item ID</a>.
+            The <code>@id</code> property MUST be set and contain a valid
+            <a>media item ID</a>.
           </li>
           <li>
             The <a data-cite="schema-org/isLiveBroadcast#">isLiveBroadcast</a>
@@ -694,8 +688,8 @@
 
           <ul>
             <li>
-              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-              set to <a data-cite="schema-org/WatchAction#">WatchAction</a>.
+              The <a>type</a> MUST be set to
+              <a data-cite="schema-org/WatchAction#">WatchAction</a>.
             </li>
             <li>
               The <a data-cite="schema-org/actionStatus#">actionStatus</a>
@@ -753,8 +747,8 @@
 
           <ul>
             <li>
-              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-              set to <a data-cite="schema-org/Rating#">Rating</a>.
+              The <a>type</a> MUST be set to
+              <a data-cite="schema-org/Rating#">Rating</a>.
             </li>
             <li>
               The <a data-cite="schema-org/author#">author</a> property MUST
@@ -787,8 +781,8 @@
 
           <ul>
             <li>
-              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-              set to <a data-cite="schema-org/InteractionCounter#">
+              The <a>type</a> MUST be set to
+              <a data-cite="schema-org/InteractionCounter#">
               InteractionCounter</a>.
             </li>
             <li>
@@ -836,8 +830,8 @@
   
           <ul>
             <li>
-              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-              set to <a data-cite="schema-org/Person#">Person</a>.
+              The <a>type</a> MUST be set to
+              <a data-cite="schema-org/Person#">Person</a>.
             </li>
             <li>
               The <a data-cite="schema-org/name#">name</a> property MUST contain a
@@ -864,8 +858,8 @@
 
           <ul>
             <li>
-              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-              set to <a data-cite="schema-org/TVSeason#">TVSeason</a>.
+              The <a>type</a> MUST be set to
+              <a data-cite="schema-org/TVSeason#">TVSeason</a>.
             </li>
             <li>
               The <a data-cite="schema-org/seasonNumber#">
@@ -899,8 +893,8 @@
 
           <ul>
             <li>
-              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-              set to <a data-cite="schema-org/TVEpisode#">TVEpisode</a>.
+              The <a>type</a> MUST be set to
+              <a data-cite="schema-org/TVEpisode#">TVEpisode</a>.
             </li>
             <li>
               The <a data-cite="schema-org/episodeNumber#">
@@ -951,8 +945,8 @@
 
         <ul>
           <li>
-            The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-            set to <a data-cite="schema-org/ImageObject#">ImageObject</a>.
+            The <a>type</a> MUST be set to
+            <a data-cite="schema-org/ImageObject#">ImageObject</a>.
           </li>
           <li>
             The <a data-cite="schema-org/width#">width</a> property MUST
@@ -977,8 +971,8 @@
 
             <ul>
               <li>
-                The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-                set to <a data-cite="schema-org/PropertyValue#">PropertyValue</a>.
+                The <a>type</a> MUST be set to
+                <a data-cite="schema-org/PropertyValue#">PropertyValue</a>.
               </li>
               <li>
                 The <a data-cite="schema-org/name#">name</a> property MUST contain
@@ -1193,8 +1187,8 @@
 
           <ul>
             <li>
-              The <a data-cite="json-ld11#specifying-the-type">type</a> MUST be
-              set to <a data-cite="schema-org/PropertyValue#">PropertyValue</a>.
+              The <a>type</a> MUST be set to
+              <a data-cite="schema-org/PropertyValue#">PropertyValue</a>.
             </li>
             <li>
               The <a data-cite="schema-org/propertyID#">propertyID</a> property
@@ -1312,6 +1306,15 @@
           </code>
         </pre>
       </div>
+    </section>
+
+    <section id="type-retrieval">
+      <h3>Type</h3>
+
+      <p>
+        The <dfn>type</dfn> property MUST be stored using <code>@type</code> for
+        the key and it MUST store a single non-empty string.
+      </p>
     </section>
   </section>
 
